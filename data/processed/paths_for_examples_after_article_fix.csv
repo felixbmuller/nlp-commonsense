@@ -1,0 +1,810 @@
+index,example,question_context,choices,path
+0,1,drawstring,military,drawstring --PartOf--> drawstring bag --AtLocation--> military
+1,1,drawstring,jewelry,[]
+2,1,drawstring,jewelry store,drawstring --PartOf--> drawstring bag --AtLocation--> jewelry store
+3,1,drawstring,safe,drawstring --PartOf--> drawstring bag --AtLocation--> safe
+4,1,drawstring,store,drawstring --PartOf--> drawstring bag --AtLocation--> store
+5,1,drawstring,garbage,[]
+6,1,drawstring,airport,drawstring --PartOf--> drawstring bag --AtLocation--> airport
+7,1,heading,military,heading <--HasContext-- siege --HasContext--> military
+8,1,heading,jewelry,heading <--HasContext-- metal --RelatedTo--> jewelry
+9,1,heading,jewelry store,[]
+10,1,heading,safe,heading <--HasContext-- home --RelatedTo--> safe
+11,1,heading,store,heading <--HasContext-- keep --MannerOf--> store
+12,1,heading,garbage,heading <--HasContext-- sink --RelatedTo--> garbage
+13,1,heading,airport,[]
+14,1,baggage,military,baggage --HasContext--> military
+15,1,baggage,jewelry,baggage --IsA--> case --RelatedTo--> jewelry
+16,1,baggage,jewelry store,[]
+17,1,baggage,safe,[]
+18,1,baggage,store,baggage <--IsA-- purse --AtLocation--> store
+19,1,baggage,garbage,baggage <--RelatedTo-- curb service --RelatedTo--> garbage
+20,1,baggage,airport,baggage --AtLocation--> airport
+21,1,drawstring bag,military,drawstring bag --AtLocation--> military
+22,1,drawstring bag,jewelry,drawstring bag --AtLocation--> jewelry store <--AtLocation-- jewelry
+23,1,drawstring bag,jewelry store,drawstring bag --AtLocation--> jewelry store
+24,1,drawstring bag,safe,drawstring bag --AtLocation--> safe
+25,1,drawstring bag,store,drawstring bag --AtLocation--> store
+26,1,drawstring bag,garbage,drawstring bag --AtLocation--> garbage can --DerivedFrom--> garbage
+27,1,drawstring bag,airport,drawstring bag --AtLocation--> airport
+28,1,wa,military,wa --HasContext--> u --HasA--> military
+29,1,wa,jewelry,[]
+30,1,wa,jewelry store,[]
+31,1,wa,safe,wa --RelatedTo--> being <--RelatedTo-- safe
+32,1,wa,store,[]
+33,1,wa,garbage,wa --HasContext--> u <--HasContext-- garbage
+34,1,wa,airport,[]
+35,1,checked,military,checked --HasContext--> north america <--HasContext-- military
+36,1,checked,jewelry,[]
+37,1,checked,jewelry store,[]
+38,1,checked,safe,[]
+39,1,checked,store,[]
+40,1,checked,garbage,[]
+41,1,checked,airport,[]
+42,1,woman,military,woman <--DerivedFrom-- infantrywoman --HasContext--> military
+43,1,woman,jewelry,woman <--RelatedTo-- necklace --IsA--> jewelry
+44,1,woman,jewelry store,[]
+45,1,woman,safe,woman <--RelatedTo-- shelter <--RelatedTo-- safe
+46,1,woman,store,woman <--RelatedTo-- purse --AtLocation--> store
+47,1,woman,garbage,woman --RelatedTo--> person --NotDesires--> garbage
+48,1,woman,airport,woman <--RelatedTo-- bar --AtLocation--> airport
+49,1,only baggage,military,[]
+50,1,only baggage,jewelry,[]
+51,1,only baggage,jewelry store,[]
+52,1,only baggage,safe,[]
+53,1,only baggage,store,[]
+54,1,only baggage,garbage,[]
+55,1,only baggage,airport,[]
+56,1,bag,military,bag --RelatedTo--> game --HasContext--> military
+57,1,bag,jewelry,bag <--RelatedTo-- case --RelatedTo--> jewelry
+58,1,bag,jewelry store,bag <--IsA-- drawstring bag --AtLocation--> jewelry store
+59,1,bag,safe,bag <--IsA-- drawstring bag --AtLocation--> safe
+60,1,bag,store,bag --RelatedTo--> store
+61,1,bag,garbage,bag --AtLocation--> trash --SimilarTo--> garbage
+62,1,bag,airport,bag <--RelatedTo-- case --RelatedTo--> airport
+63,2,cancelled,wa,[]
+64,2,cancelled,certain,[]
+65,2,cancelled,worried,[]
+66,2,cancelled,catch,[]
+67,2,cancelled,flu,[]
+68,2,party,wa,party <--RelatedTo-- christmas --RelatedTo--> wa
+69,2,party,certain,party --RelatedTo--> very <--RelatedTo-- certain
+70,2,party,worried,party --IsA--> person --NotDesires--> worried
+71,2,party,catch,party --RelatedTo--> game <--IsA-- catch
+72,2,party,flu,party --IsA--> person --NotDesires--> flu
+73,2,wa,wa,wa
+74,2,wa,certain,wa --RelatedTo--> being <--RelatedTo-- certain
+75,2,wa,worried,[]
+76,2,wa,catch,[]
+77,2,wa,flu,[]
+78,2,cause,wa,cause --RelatedTo--> side --RelatedTo--> wa
+79,2,cause,certain,cause --RelatedTo--> happen <--RelatedTo-- certain
+80,2,cause,worried,[]
+81,2,cause,catch,cause <--Synonym-- get --MannerOf--> catch
+82,2,cause,flu,cause <--RelatedTo-- disease --RelatedTo--> flu
+83,2,host,wa,[]
+84,2,host,certain,[]
+85,2,host,worried,[]
+86,2,host,catch,host --HasContext--> computing <--HasContext-- catch
+87,2,host,flu,host <--AtLocation-- disease --RelatedTo--> flu
+88,3,incriminating,enemy,[]
+89,3,incriminating,blackmailed,[]
+90,3,incriminating,man,[]
+91,3,incriminating,his enemy,[]
+92,3,incriminating,avoided,[]
+93,3,enemy,enemy,enemy
+94,3,enemy,blackmailed,[]
+95,3,enemy,man,enemy --RelatedTo--> guy --IsA--> man
+96,3,enemy,his enemy,[]
+97,3,enemy,avoided,enemy --RelatedTo--> person --NotDesires--> avoided
+98,3,man,enemy,man --RelatedTo--> guy <--RelatedTo-- enemy
+99,3,man,blackmailed,[]
+100,3,man,man,man
+101,3,man,his enemy,[]
+102,3,man,avoided,man --RelatedTo--> person --NotDesires--> avoided
+103,3,uncovered,enemy,[]
+104,3,uncovered,blackmailed,[]
+105,3,uncovered,man,[]
+106,3,uncovered,his enemy,[]
+107,3,uncovered,avoided,[]
+108,3,evidence,enemy,evidence <--Desires-- person <--RelatedTo-- enemy
+109,3,evidence,blackmailed,[]
+110,3,evidence,man,evidence <--RelatedTo-- manufacture --RelatedTo--> man
+111,3,evidence,his enemy,[]
+112,3,evidence,avoided,evidence <--Desires-- person --NotDesires--> avoided
+113,3,result,enemy,result <--RelatedTo-- issue --RelatedTo--> enemy
+114,3,result,blackmailed,[]
+115,3,result,man,result <--RelatedTo-- work <--MannerOf-- man
+116,3,result,his enemy,[]
+117,3,result,avoided,result <--Desires-- person --NotDesires--> avoided
+118,3,happened,enemy,[]
+119,3,happened,blackmailed,[]
+120,3,happened,man,happened <--RelatedTo-- history --RelatedTo--> man
+121,3,happened,his enemy,[]
+122,3,happened,avoided,[]
+123,3,his enemy,enemy,[]
+124,3,his enemy,blackmailed,[]
+125,3,his enemy,man,[]
+126,3,his enemy,his enemy,[]
+127,3,his enemy,avoided,[]
+128,4,parent,clean,parent <--RelatedTo-- organization --RelatedTo--> clean
+129,4,parent,mess,parent --IsA--> animal <--RelatedTo-- mess
+130,4,parent,having,parent <--RelatedTo-- adopt --RelatedTo--> having
+131,4,parent,trouble,parent --RelatedTo--> act <--RelatedTo-- trouble
+132,4,parent,party,parent --AtLocation--> party
+133,4,parent,punish,[]
+134,4,parent,alex,parent <--CreatedBy-- baby <--IsA-- alex
+135,4,his house,clean,[]
+136,4,his house,mess,[]
+137,4,his house,having,[]
+138,4,his house,trouble,[]
+139,4,his house,party,[]
+140,4,his house,punish,[]
+141,4,his house,alex,[]
+142,4,happen,clean,happen <--RelatedTo-- do <--HasPrerequisite-- clean
+143,4,happen,mess,[]
+144,4,happen,having,happen <--RelatedTo-- regret --DistinctFrom--> having
+145,4,happen,trouble,happen --RelatedTo--> circumstance <--RelatedTo-- trouble
+146,4,happen,party,happen <--RelatedTo-- offer <--RelatedTo-- party
+147,4,happen,punish,happen <--RelatedTo-- cause <--RelatedTo-- punish
+148,4,happen,alex,[]
+149,4,town,clean,town <--AtLocation-- river --RelatedTo--> clean
+150,4,town,mess,town <--AtLocation-- church <--RelatedTo-- mess
+151,4,town,having,town --RelatedTo--> farm --RelatedTo--> having
+152,4,town,trouble,town <--RelatedTo-- hell --IsA--> trouble
+153,4,town,party,town <--RelatedTo-- bar --RelatedTo--> party
+154,4,town,punish,town <--RelatedTo-- provost --RelatedTo--> punish
+155,4,town,alex,[]
+156,4,his parents,clean,[]
+157,4,his parents,mess,[]
+158,4,his parents,having,[]
+159,4,his parents,trouble,[]
+160,4,his parents,party,[]
+161,4,his parents,punish,[]
+162,4,his parents,alex,[]
+163,4,told,clean,[]
+164,4,told,mess,[]
+165,4,told,having,[]
+166,4,told,trouble,[]
+167,4,told,party,[]
+168,4,told,punish,[]
+169,4,told,alex,[]
+170,4,party,clean,party <--RelatedTo-- fair --Synonym--> clean
+171,4,party,mess,party --RelatedTo--> mess
+172,4,party,having,party --RelatedTo--> having
+173,4,party,trouble,party --RelatedTo--> game <--RelatedTo-- trouble
+174,4,party,party,party
+175,4,party,punish,party --UsedFor--> relaxing <--HasLastSubevent-- punish
+176,4,party,alex,party --IsA--> person <--IsA-- alex
+177,4,alex's parents,clean,[]
+178,4,alex's parents,mess,[]
+179,4,alex's parents,having,[]
+180,4,alex's parents,trouble,[]
+181,4,alex's parents,party,[]
+182,4,alex's parents,punish,[]
+183,4,alex's parents,alex,[]
+184,4,alex,clean,alex --IsA--> person --Desires--> clean
+185,4,alex,mess,[]
+186,4,alex,having,[]
+187,4,alex,trouble,[]
+188,4,alex,party,alex --IsA--> person <--IsA-- party
+189,4,alex,punish,[]
+190,4,alex,alex,alex
+191,4,house,clean,house <--PartOf-- shower --RelatedTo--> clean
+192,4,house,mess,house --RelatedTo--> four <--RelatedTo-- mess
+193,4,house,having,house <--RelatedTo-- castellated --RelatedTo--> having
+194,4,house,trouble,house <--AtLocation-- board game <--RelatedTo-- trouble
+195,4,house,party,house <--RelatedTo-- party
+196,4,house,punish,house <--RelatedTo-- ground --RelatedTo--> punish
+197,4,house,alex,house <--AtLocation-- baby <--IsA-- alex
+198,5,harvard,read,[]
+199,5,harvard,harvard,harvard
+200,5,harvard,away,[]
+201,5,harvard,apply,harvard --IsA--> college <--RelatedTo-- apply
+202,5,harvard,entry,[]
+203,5,harvard,letter,[]
+204,5,harvard,throw,[]
+205,5,want,read,want --DistinctFrom--> have <--MannerOf-- read
+206,5,want,harvard,[]
+207,5,want,away,want --MannerOf--> be --RelatedTo--> away
+208,5,want,apply,want --DistinctFrom--> pot --RelatedTo--> apply
+209,5,want,entry,[]
+210,5,want,letter,[]
+211,5,want,throw,want <--RelatedTo-- waste --RelatedTo--> throw
+212,5,excited,read,[]
+213,5,excited,harvard,[]
+214,5,excited,away,excited <--RelatedTo-- carried away --DerivedFrom--> away
+215,5,excited,apply,[]
+216,5,excited,entry,[]
+217,5,excited,letter,[]
+218,5,excited,throw,[]
+219,5,got,read,got --Synonym--> have <--MannerOf-- read
+220,5,got,harvard,[]
+221,5,got,away,got <--RelatedTo-- go <--RelatedTo-- away
+222,5,got,apply,got <--RelatedTo-- go --RelatedTo--> apply
+223,5,got,entry,[]
+224,5,got,letter,got <--RelatedTo-- piece <--RelatedTo-- letter
+225,5,got,throw,got --HasContext--> slang <--HasContext-- throw
+226,5,wa,read,wa --HasContext--> u --CapableOf--> read
+227,5,wa,harvard,[]
+228,5,wa,away,wa --RelatedTo--> be --RelatedTo--> away
+229,5,wa,apply,wa --RelatedTo--> before <--RelatedTo-- apply
+230,5,wa,entry,[]
+231,5,wa,letter,wa --HasContext--> u --IsA--> letter
+232,5,wa,throw,[]
+233,5,skylar,read,[]
+234,5,skylar,harvard,[]
+235,5,skylar,away,[]
+236,5,skylar,apply,[]
+237,5,skylar,entry,[]
+238,5,skylar,letter,[]
+239,5,skylar,throw,[]
+240,5,mail,read,mail --HasContext--> u --CapableOf--> read
+241,5,mail,harvard,[]
+242,5,mail,away,mail --MannerOf--> send <--RelatedTo-- away
+243,5,mail,apply,mail --MannerOf--> send <--RelatedTo-- apply
+244,5,mail,entry,mail <--MannerOf-- register --RelatedTo--> entry
+245,5,mail,letter,mail --RelatedTo--> letter
+246,5,mail,throw,mail <--RelatedTo-- deliver --MannerOf--> throw
+247,5,letter,read,letter --IsA--> text --ReceivesAction--> read
+248,5,letter,harvard,[]
+249,5,letter,away,letter --RelatedTo--> send <--RelatedTo-- away
+250,5,letter,apply,letter --RelatedTo--> send <--RelatedTo-- apply
+251,5,letter,entry,letter --RelatedTo--> element <--Synonym-- entry
+252,5,letter,letter,letter
+253,5,letter,throw,letter <--RelatedTo-- pitch --IsA--> throw
+254,6,giant,pipe,giant --HasContext--> computing <--HasContext-- pipe
+255,6,giant,pile,giant <--RelatedTo-- mountain --RelatedTo--> pile
+256,6,giant pile,pipe,[]
+257,6,giant pile,pile,[]
+258,6,rigid,pipe,rigid <--RelatedTo-- pipe
+259,6,rigid,pile,rigid <--RelatedTo-- set --RelatedTo--> pile
+260,6,wa,pipe,wa --HasContext--> u <--HasContext-- pipe
+261,6,wa,pile,[]
+262,6,pipe,pipe,pipe
+263,6,pipe,pile,pipe --RelatedTo--> fabric <--RelatedTo-- pile
+264,6,burst,pipe,[]
+265,6,burst,pile,[]
+266,6,eased,pipe,[]
+267,6,eased,pile,[]
+268,6,pile,pipe,pile --RelatedTo--> fabric <--RelatedTo-- pipe
+269,6,pile,pile,pile
+270,7,people,kevin,[]
+271,7,people,lawrence,[]
+272,7,crowd,kevin,[]
+273,7,crowd,lawrence,[]
+274,7,new,kevin,[]
+275,7,new,lawrence,[]
+276,7,lawrence,kevin,[]
+277,7,lawrence,lawrence,lawrence
+278,7,new york city,kevin,[]
+279,7,new york city,lawrence,[]
+280,7,visiting,kevin,[]
+281,7,visiting,lawrence,[]
+282,7,not lawrence,kevin,[]
+283,7,not lawrence,lawrence,[]
+284,7,york,kevin,york --HasContext--> slang <--HasContext-- kevin
+285,7,york,lawrence,york --RelatedTo--> county seat <--RelatedTo-- lawrence
+286,7,hate,kevin,[]
+287,7,hate,lawrence,[]
+288,7,interested,kevin,[]
+289,7,interested,lawrence,[]
+290,7,city,kevin,[]
+291,7,city,lawrence,city --RelatedTo--> kansa <--PartOf-- lawrence
+292,7,interested kevin,kevin,[]
+293,7,interested kevin,lawrence,[]
+294,7,kevin,kevin,kevin
+295,7,kevin,lawrence,[]
+296,8,graduated,open,[]
+297,8,graduated,decided,[]
+298,8,graduated,jim,[]
+299,8,graduated,devise,[]
+300,8,graduated,repayment,[]
+301,8,graduated,plan,graduated <--MotivatedByGoal-- receive degree --HasPrerequisite--> plan
+302,8,graduated,card,[]
+303,8,graduated,another credit card,[]
+304,8,graduated,credit,[]
+305,8,realized,open,[]
+306,8,realized,decided,[]
+307,8,realized,jim,[]
+308,8,realized,devise,[]
+309,8,realized,repayment,[]
+310,8,realized,plan,[]
+311,8,realized,card,[]
+312,8,realized,another credit card,[]
+313,8,realized,credit,[]
+314,8,so much money,open,[]
+315,8,so much money,decided,[]
+316,8,so much money,jim,[]
+317,8,so much money,devise,[]
+318,8,so much money,repayment,[]
+319,8,so much money,plan,[]
+320,8,so much money,card,[]
+321,8,so much money,another credit card,[]
+322,8,so much money,credit,[]
+323,8,debt,open,debt --RelatedTo--> action <--RelatedTo-- open
+324,8,debt,decided,[]
+325,8,debt,jim,[]
+326,8,debt,devise,debt <--RelatedTo-- law <--HasContext-- devise
+327,8,debt,repayment,debt --RelatedTo--> money <--RelatedTo-- repayment
+328,8,debt,plan,debt --RelatedTo--> bill --RelatedTo--> plan
+329,8,debt,card,debt --RelatedTo--> card
+330,8,debt,another credit card,[]
+331,8,debt,credit,debt --RelatedTo--> credit
+332,8,bought,open,bought --DerivedFrom--> t --RelatedTo--> open
+333,8,bought,decided,[]
+334,8,bought,jim,[]
+335,8,bought,devise,bought <--RelatedTo-- property <--RelatedTo-- devise
+336,8,bought,repayment,[]
+337,8,bought,plan,[]
+338,8,bought,card,bought <--RelatedTo-- property --RelatedTo--> card
+339,8,bought,another credit card,[]
+340,8,bought,credit,[]
+341,8,"$10,000 debt",open,[]
+342,8,"$10,000 debt",decided,[]
+343,8,"$10,000 debt",jim,[]
+344,8,"$10,000 debt",devise,[]
+345,8,"$10,000 debt",repayment,[]
+346,8,"$10,000 debt",plan,[]
+347,8,"$10,000 debt",card,[]
+348,8,"$10,000 debt",another credit card,[]
+349,8,"$10,000 debt",credit,[]
+350,8,$,open,[]
+351,8,$,decided,[]
+352,8,$,jim,[]
+353,8,$,devise,[]
+354,8,$,repayment,[]
+355,8,$,plan,[]
+356,8,$,card,[]
+357,8,$,another credit card,[]
+358,8,$,credit,[]
+359,8,got,open,got <--RelatedTo-- country --RelatedTo--> open
+360,8,got,decided,[]
+361,8,got,jim,[]
+362,8,got,devise,[]
+363,8,got,repayment,[]
+364,8,got,plan,[]
+365,8,got,card,got <--RelatedTo-- piece <--RelatedTo-- card
+366,8,got,another credit card,[]
+367,8,got,credit,[]
+368,8,next sentence,open,[]
+369,8,next sentence,decided,[]
+370,8,next sentence,jim,[]
+371,8,next sentence,devise,[]
+372,8,next sentence,repayment,[]
+373,8,next sentence,plan,[]
+374,8,next sentence,card,[]
+375,8,next sentence,another credit card,[]
+376,8,next sentence,credit,[]
+377,8,wa,open,wa <--RelatedTo-- t --RelatedTo--> open
+378,8,wa,decided,[]
+379,8,wa,jim,[]
+380,8,wa,devise,[]
+381,8,wa,repayment,[]
+382,8,wa,plan,wa --HasContext--> u <--HasContext-- plan
+383,8,wa,card,wa --RelatedTo--> used <--RelatedTo-- card
+384,8,wa,another credit card,[]
+385,8,wa,credit,wa --HasContext--> u <--HasContext-- credit
+386,8,his first credit card,open,[]
+387,8,his first credit card,decided,[]
+388,8,his first credit card,jim,[]
+389,8,his first credit card,devise,[]
+390,8,his first credit card,repayment,[]
+391,8,his first credit card,plan,[]
+392,8,his first credit card,card,[]
+393,8,his first credit card,another credit card,[]
+394,8,his first credit card,credit,[]
+395,8,college,open,college <--RelatedTo-- cut --RelatedTo--> open
+396,8,college,decided,[]
+397,8,college,jim,college --RelatedTo--> kid <--HasA-- jim
+398,8,college,devise,[]
+399,8,college,repayment,[]
+400,8,college,plan,college --RelatedTo--> people --CapableOf--> plan
+401,8,college,card,college --RelatedTo--> four <--RelatedTo-- card
+402,8,college,another credit card,[]
+403,8,college,credit,college <--RelatedTo-- merit --RelatedTo--> credit
+404,8,spend,open,spend --RelatedTo--> spread --RelatedTo--> open
+405,8,spend,decided,[]
+406,8,spend,jim,[]
+407,8,spend,devise,spend <--RelatedTo-- contrive --RelatedTo--> devise
+408,8,spend,repayment,spend --RelatedTo--> money <--RelatedTo-- repayment
+409,8,spend,plan,spend <--MannerOf-- lay out --MannerOf--> plan
+410,8,spend,card,spend --RelatedTo--> money <--RelatedTo-- card
+411,8,spend,another credit card,[]
+412,8,spend,credit,spend --RelatedTo--> money --RelatedTo--> credit
+413,8,jim,open,[]
+414,8,jim,decided,[]
+415,8,jim,jim,jim
+416,8,jim,devise,[]
+417,8,jim,repayment,[]
+418,8,jim,plan,[]
+419,8,jim,card,[]
+420,8,jim,another credit card,[]
+421,8,jim,credit,[]
+422,8,card,open,card --HasContext--> cricket <--HasContext-- open
+423,8,card,decided,card --RelatedTo--> clear <--RelatedTo-- decided
+424,8,card,jim,[]
+425,8,card,devise,card <--RelatedTo-- property <--RelatedTo-- devise
+426,8,card,repayment,card --RelatedTo--> payment <--IsA-- repayment
+427,8,card,plan,card --RelatedTo--> device <--RelatedTo-- plan
+428,8,card,card,card
+429,8,card,another credit card,[]
+430,8,card,credit,card --RelatedTo--> credit
+431,8,sentence,open,sentence <--AtLocation-- space --RelatedTo--> open
+432,8,sentence,decided,[]
+433,8,sentence,jim,[]
+434,8,sentence,devise,sentence <--RelatedTo-- and --RelatedTo--> devise
+435,8,sentence,repayment,sentence --IsA--> punishment --RelatedTo--> repayment
+436,8,sentence,plan,[]
+437,8,sentence,card,sentence <--AtLocation-- space <--RelatedTo-- card
+438,8,sentence,another credit card,[]
+439,8,sentence,credit,sentence --HasContext--> law <--HasContext-- credit
+440,8,"10,000",open,[]
+441,8,"10,000",decided,[]
+442,8,"10,000",jim,[]
+443,8,"10,000",devise,[]
+444,8,"10,000",repayment,[]
+445,8,"10,000",plan,[]
+446,8,"10,000",card,[]
+447,8,"10,000",another credit card,[]
+448,8,"10,000",credit,[]
+449,8,money,open,money <--RelatedTo-- pot --RelatedTo--> open
+450,8,money,decided,[]
+451,8,money,jim,money <--RelatedTo-- nut <--HasProperty-- jim
+452,8,money,devise,money <--RelatedTo-- property <--RelatedTo-- devise
+453,8,money,repayment,money <--RelatedTo-- repayment
+454,8,money,plan,money <--RelatedTo-- organization <--RelatedTo-- plan
+455,8,money,card,money <--RelatedTo-- card
+456,8,money,another credit card,[]
+457,8,money,credit,money --RelatedTo--> credit
+458,8,his card,open,[]
+459,8,his card,decided,[]
+460,8,his card,jim,[]
+461,8,his card,devise,[]
+462,8,his card,repayment,[]
+463,8,his card,plan,[]
+464,8,his card,card,[]
+465,8,his card,another credit card,[]
+466,8,his card,credit,[]
+467,8,amounted,open,[]
+468,8,amounted,decided,[]
+469,8,amounted,jim,[]
+470,8,amounted,devise,[]
+471,8,amounted,repayment,[]
+472,8,amounted,plan,[]
+473,8,amounted,card,[]
+474,8,amounted,another credit card,[]
+475,8,amounted,credit,[]
+476,8,job,open,job <--RelatedTo-- cut --RelatedTo--> open
+477,8,job,decided,[]
+478,8,job,jim,[]
+479,8,job,devise,job <--RelatedTo-- law <--HasContext-- devise
+480,8,job,repayment,job <--RelatedTo-- payment <--IsA-- repayment
+481,8,job,plan,job <--RelatedTo-- engineer --RelatedTo--> plan
+482,8,job,card,job <--RelatedTo-- walk --RelatedTo--> card
+483,8,job,another credit card,[]
+484,8,job,credit,job <--RelatedTo-- law <--HasContext-- credit
+485,8,credit,open,credit --HasContext--> business <--HasContext-- open
+486,8,credit,decided,[]
+487,8,credit,jim,[]
+488,8,credit,devise,credit --HasContext--> law <--HasContext-- devise
+489,8,credit,repayment,credit <--RelatedTo-- money <--RelatedTo-- repayment
+490,8,credit,plan,credit --IsA--> list <--RelatedTo-- plan
+491,8,credit,card,credit <--RelatedTo-- card
+492,8,credit,another credit card,[]
+493,8,credit,credit,credit
+494,8,foolish,open,[]
+495,8,foolish,decided,[]
+496,8,foolish,jim,[]
+497,8,foolish,devise,[]
+498,8,foolish,repayment,[]
+499,8,foolish,plan,[]
+500,8,foolish,card,foolish --DerivedFrom--> fool --RelatedTo--> card
+501,8,foolish,another credit card,[]
+502,8,foolish,credit,[]
+503,9,near,buy,near <--RelatedTo-- be <--MannerOf-- buy
+504,9,near,45-acre horse farm,[]
+505,9,near,celebrated,[]
+506,9,near,-,[]
+507,9,near,horse,near --HasContext--> u <--HasContext-- horse
+508,9,near,dream,near --RelatedTo--> time <--RelatedTo-- dream
+509,9,near,mark,[]
+510,9,near,participating,[]
+511,9,near,nice,near --Synonym--> dear --RelatedTo--> nice
+512,9,near,nice dinner,[]
+513,9,near,dinner,near --RelatedTo--> time <--RelatedTo-- dinner
+514,9,near,farm,near --Antonym--> remote <--RelatedTo-- farm
+515,9,near,retired,[]
+516,9,near,acre,[]
+517,9,near,45,[]
+518,9,right,buy,right <--RelatedTo-- take --MannerOf--> buy
+519,9,right,45-acre horse farm,[]
+520,9,right,celebrated,right <--Desires-- person --Desires--> celebrated
+521,9,right,-,[]
+522,9,right,horse,right <--RelatedTo-- eatage --RelatedTo--> horse
+523,9,right,dream,right <--RelatedTo-- perfect <--RelatedTo-- dream
+524,9,right,mark,right <--RelatedTo-- guard --RelatedTo--> mark
+525,9,right,participating,[]
+526,9,right,nice,right --Synonym--> proper --RelatedTo--> nice
+527,9,right,nice dinner,right <--Desires-- person --Desires--> nice dinner
+528,9,right,dinner,right <--RelatedTo-- record --RelatedTo--> dinner
+529,9,right,farm,right <--RelatedTo-- property <--RelatedTo-- farm
+530,9,right,retired,[]
+531,9,right,acre,right <--RelatedTo-- property --RelatedTo--> acre
+532,9,right,45,right <--RelatedTo-- record <--RelatedTo-- 45
+533,9,l.,buy,[]
+534,9,l.,45-acre horse farm,[]
+535,9,l.,celebrated,[]
+536,9,l.,-,[]
+537,9,l.,horse,[]
+538,9,l.,dream,[]
+539,9,l.,mark,[]
+540,9,l.,participating,[]
+541,9,l.,nice,[]
+542,9,l.,nice dinner,[]
+543,9,l.,dinner,[]
+544,9,l.,farm,[]
+545,9,l.,retired,[]
+546,9,l.,acre,[]
+547,9,l.,45,[]
+548,9,found,buy,found <--RelatedTo-- cry --RelatedTo--> buy
+549,9,found,45-acre horse farm,[]
+550,9,found,celebrated,[]
+551,9,found,-,[]
+552,9,found,horse,found --RelatedTo--> start --RelatedTo--> horse
+553,9,found,dream,found <--RelatedTo-- cloud <--RelatedTo-- dream
+554,9,found,mark,found <--RelatedTo-- circle --RelatedTo--> mark
+555,9,found,participating,[]
+556,9,found,nice,found <--RelatedTo-- cloud --RelatedTo--> nice
+557,9,found,nice dinner,[]
+558,9,found,dinner,[]
+559,9,found,farm,found <--RelatedTo-- establishment <--RelatedTo-- farm
+560,9,found,retired,[]
+561,9,found,acre,[]
+562,9,found,45,[]
+563,9,st.,buy,[]
+564,9,st.,45-acre horse farm,[]
+565,9,st.,celebrated,[]
+566,9,st.,-,[]
+567,9,st.,horse,[]
+568,9,st.,dream,[]
+569,9,st.,mark,[]
+570,9,st.,participating,[]
+571,9,st.,nice,[]
+572,9,st.,nice dinner,[]
+573,9,st.,dinner,[]
+574,9,st.,farm,[]
+575,9,st.,retired,[]
+576,9,st.,acre,[]
+577,9,st.,45,[]
+578,9,bailey,buy,[]
+579,9,bailey,45-acre horse farm,[]
+580,9,bailey,celebrated,[]
+581,9,bailey,-,[]
+582,9,bailey,horse,bailey --HasContext--> u <--HasContext-- horse
+583,9,bailey,dream,[]
+584,9,bailey,mark,bailey --RelatedTo--> official <--RelatedTo-- mark
+585,9,bailey,participating,[]
+586,9,bailey,nice,bailey --RelatedTo--> apple --RelatedTo--> nice
+587,9,bailey,nice dinner,[]
+588,9,bailey,dinner,[]
+589,9,bailey,farm,[]
+590,9,bailey,retired,[]
+591,9,bailey,acre,[]
+592,9,bailey,45,[]
+593,9,farm,buy,farm --RelatedTo--> rent --DistinctFrom--> buy
+594,9,farm,45-acre horse farm,[]
+595,9,farm,celebrated,[]
+596,9,farm,-,[]
+597,9,farm,horse,farm --RelatedTo--> horse
+598,9,farm,dream,farm --RelatedTo--> living <--RelatedTo-- dream
+599,9,farm,mark,farm --RelatedTo--> red <--RelatedTo-- mark
+600,9,farm,participating,[]
+601,9,farm,nice,farm --RelatedTo--> garden --HasProperty--> nice
+602,9,farm,nice dinner,[]
+603,9,farm,dinner,farm --RelatedTo--> cereal --IsA--> dinner
+604,9,farm,farm,farm
+605,9,farm,retired,[]
+606,9,farm,acre,farm --RelatedTo--> acre
+607,9,farm,45,[]
+608,9,growing,buy,growing <--RelatedTo-- birthday --CausesDesire--> buy
+609,9,growing,45-acre horse farm,[]
+610,9,growing,celebrated,growing <--RelatedTo-- birthday --RelatedTo--> celebrated
+611,9,growing,-,[]
+612,9,growing,horse,growing <--RelatedTo-- field --RelatedTo--> horse
+613,9,growing,dream,growing <--RelatedTo-- field --RelatedTo--> dream
+614,9,growing,mark,growing <--RelatedTo-- birthday --RelatedTo--> mark
+615,9,growing,participating,[]
+616,9,growing,nice,growing <--RelatedTo-- child --RelatedTo--> nice
+617,9,growing,nice dinner,[]
+618,9,growing,dinner,growing <--UsedFor-- corn --AtLocation--> dinner
+619,9,growing,farm,growing <--RelatedTo-- farm
+620,9,growing,retired,[]
+621,9,growing,acre,growing <--RelatedTo-- field --RelatedTo--> acre
+622,9,growing,45,[]
+623,9,dream,buy,dream --RelatedTo--> like <--RelatedTo-- buy
+624,9,dream,45-acre horse farm,[]
+625,9,dream,celebrated,dream <--NotDesires-- person --Desires--> celebrated
+626,9,dream,-,[]
+627,9,dream,horse,dream <--RelatedTo-- field --RelatedTo--> horse
+628,9,dream,dream,dream
+629,9,dream,mark,dream --dbpedia/occupation--> singing <--HasContext-- mark
+630,9,dream,participating,[]
+631,9,dream,nice,dream --RelatedTo--> nice
+632,9,dream,nice dinner,dream <--NotDesires-- person --Desires--> nice dinner
+633,9,dream,dinner,dream --RelatedTo--> after <--RelatedTo-- dinner
+634,9,dream,farm,dream --RelatedTo--> living <--RelatedTo-- farm
+635,9,dream,retired,[]
+636,9,dream,acre,dream --RelatedTo--> day <--RelatedTo-- acre
+637,9,dream,45,[]
+638,9,paul,buy,[]
+639,9,paul,45-acre horse farm,[]
+640,9,paul,celebrated,[]
+641,9,paul,-,[]
+642,9,paul,horse,paul --RelatedTo--> poll --PartOf--> horse
+643,9,paul,dream,[]
+644,9,paul,mark,paul --RelatedTo--> apostle <--RelatedTo-- mark
+645,9,paul,participating,[]
+646,9,paul,nice,paul --RelatedTo--> proper --RelatedTo--> nice
+647,9,paul,nice dinner,[]
+648,9,paul,dinner,[]
+649,9,paul,farm,paul --RelatedTo--> city --Antonym--> farm
+650,9,paul,retired,[]
+651,9,paul,acre,paul <--RelatedTo-- ox <--RelatedTo-- acre
+652,9,paul,45,[]
+653,9,l. mark bailey,buy,[]
+654,9,l. mark bailey,45-acre horse farm,[]
+655,9,l. mark bailey,celebrated,[]
+656,9,l. mark bailey,-,[]
+657,9,l. mark bailey,horse,[]
+658,9,l. mark bailey,dream,[]
+659,9,l. mark bailey,mark,[]
+660,9,l. mark bailey,participating,[]
+661,9,l. mark bailey,nice,[]
+662,9,l. mark bailey,nice dinner,[]
+663,9,l. mark bailey,dinner,[]
+664,9,l. mark bailey,farm,[]
+665,9,l. mark bailey,retired,[]
+666,9,l. mark bailey,acre,[]
+667,9,l. mark bailey,45,[]
+668,9,st. paul,buy,[]
+669,9,st. paul,45-acre horse farm,[]
+670,9,st. paul,celebrated,[]
+671,9,st. paul,-,[]
+672,9,st. paul,horse,[]
+673,9,st. paul,dream,[]
+674,9,st. paul,mark,[]
+675,9,st. paul,participating,[]
+676,9,st. paul,nice,[]
+677,9,st. paul,nice dinner,[]
+678,9,st. paul,dinner,[]
+679,9,st. paul,farm,[]
+680,9,st. paul,retired,[]
+681,9,st. paul,acre,[]
+682,9,st. paul,45,[]
+683,9,judge,buy,judge --Synonym--> believe <--MannerOf-- buy
+684,9,judge,45-acre horse farm,[]
+685,9,judge,celebrated,judge --RelatedTo--> person --Desires--> celebrated
+686,9,judge,-,[]
+687,9,judge,horse,judge --RelatedTo--> wear <--RelatedTo-- horse
+688,9,judge,dream,judge --RelatedTo--> head <--RelatedTo-- dream
+689,9,judge,mark,judge <--RelatedTo-- bar --RelatedTo--> mark
+690,9,judge,participating,[]
+691,9,judge,nice,judge <--RelatedTo-- punishment --Antonym--> nice
+692,9,judge,nice dinner,judge --RelatedTo--> person --Desires--> nice dinner
+693,9,judge,dinner,judge --RelatedTo--> person --Desires--> dinner
+694,9,judge,farm,judge --RelatedTo--> making <--RelatedTo-- farm
+695,9,judge,retired,[]
+696,9,judge,acre,judge --RelatedTo--> system <--RelatedTo-- acre
+697,9,judge,45,[]
+698,9,mark,buy,mark <--RelatedTo-- sale --RelatedTo--> buy
+699,9,mark,45-acre horse farm,[]
+700,9,mark,celebrated,mark <--RelatedTo-- birthday --RelatedTo--> celebrated
+701,9,mark,-,[]
+702,9,mark,horse,mark --RelatedTo--> four <--RelatedTo-- horse
+703,9,mark,dream,mark --HasContext--> singing <--dbpedia/occupation-- dream
+704,9,mark,mark,mark
+705,9,mark,participating,[]
+706,9,mark,nice,mark --RelatedTo--> sound --RelatedTo--> nice
+707,9,mark,nice dinner,[]
+708,9,mark,dinner,mark --RelatedTo--> record --RelatedTo--> dinner
+709,9,mark,farm,mark --RelatedTo--> red <--RelatedTo-- farm
+710,9,mark,retired,[]
+711,9,mark,acre,mark <--MannerOf-- dimension <--RelatedTo-- acre
+712,9,mark,45,mark --RelatedTo--> record <--RelatedTo-- 45
+713,10,yolk,yolk,yolk
+714,10,yolk,place,yolk --RelatedTo--> middle --RelatedTo--> place
+715,10,yolk,release,[]
+716,10,yolk,creates,[]
+717,10,yolk,squeeze,[]
+718,10,yolk,pushing,[]
+719,10,yolk,water bottle,[]
+720,10,yolk,lift,[]
+721,10,yolk,bottle,yolk --IsA--> liquid <--RelatedTo-- bottle
+722,10,yolk,suction,[]
+723,10,yolk,press,[]
+724,10,yolk,water,yolk --RelatedTo--> inside <--RelatedTo-- water
+725,10,white,yolk,white <--Antonym-- yolk
+726,10,white,place,white <--HasProperty-- shoe --Synonym--> place
+727,10,white,release,white --HasContext--> historical <--HasContext-- release
+728,10,white,creates,white <--IsA-- wax --RelatedTo--> creates
+729,10,white,squeeze,white --HasContext--> slang <--HasContext-- squeeze
+730,10,white,pushing,[]
+731,10,white,water bottle,white <--RelatedTo-- water <--RelatedTo-- water bottle
+732,10,white,lift,white <--HasProperty-- shoe <--RelatedTo-- lift
+733,10,white,bottle,white --RelatedTo--> milk --AtLocation--> bottle
+734,10,white,suction,[]
+735,10,white,press,white --IsA--> man <--RelatedTo-- press
+736,10,white,water,white <--RelatedTo-- water
+737,10,water bottle,yolk,[]
+738,10,water bottle,place,water bottle --AtLocation--> beach --IsA--> place
+739,10,water bottle,release,[]
+740,10,water bottle,creates,[]
+741,10,water bottle,squeeze,[]
+742,10,water bottle,pushing,[]
+743,10,water bottle,water bottle,water bottle
+744,10,water bottle,lift,[]
+745,10,water bottle,bottle,water bottle --IsA--> bottle
+746,10,water bottle,suction,[]
+747,10,water bottle,press,[]
+748,10,water bottle,water,water bottle --RelatedTo--> water
+749,10,separate,yolk,separate <--RelatedTo-- strain --RelatedTo--> yolk
+750,10,separate,place,separate <--DerivedFrom-- separation --RelatedTo--> place
+751,10,separate,release,[]
+752,10,separate,creates,[]
+753,10,separate,squeeze,[]
+754,10,separate,pushing,[]
+755,10,separate,water bottle,[]
+756,10,separate,lift,separate --MannerOf--> change <--MannerOf-- lift
+757,10,separate,bottle,separate <--UsedFor-- bar <--RelatedTo-- bottle
+758,10,separate,suction,[]
+759,10,separate,press,separate --RelatedTo--> reduce <--RelatedTo-- press
+760,10,separate,water,separate <--RelatedTo-- reverse osmosis --RelatedTo--> water
+761,10,bottle,yolk,bottle --RelatedTo--> liquid <--IsA-- yolk
+762,10,bottle,place,bottle --AtLocation--> nursery --RelatedTo--> place
+763,10,bottle,release,bottle --UsedFor--> hold --Antonym--> release
+764,10,bottle,creates,[]
+765,10,bottle,squeeze,bottle --MannerOf--> put <--RelatedTo-- squeeze
+766,10,bottle,pushing,[]
+767,10,bottle,water bottle,bottle <--IsA-- water bottle
+768,10,bottle,lift,bottle --MannerOf--> put <--Antonym-- lift
+769,10,bottle,bottle,bottle
+770,10,bottle,suction,bottle --RelatedTo--> cup --RelatedTo--> suction
+771,10,bottle,press,bottle --MannerOf--> put <--RelatedTo-- press
+772,10,bottle,water,bottle <--AtLocation-- water
+773,10,egg whites,yolk,egg whites --FormOf--> egg white --RelatedTo--> yolk
+774,10,egg whites,place,[]
+775,10,egg whites,release,[]
+776,10,egg whites,creates,[]
+777,10,egg whites,squeeze,[]
+778,10,egg whites,pushing,[]
+779,10,egg whites,water bottle,[]
+780,10,egg whites,lift,[]
+781,10,egg whites,bottle,[]
+782,10,egg whites,suction,[]
+783,10,egg whites,press,[]
+784,10,egg whites,water,[]
+785,10,egg,yolk,egg --RelatedTo--> yolk
+786,10,egg,place,egg --RelatedTo--> center --IsA--> place
+787,10,egg,release,egg <--RelatedTo-- drop --RelatedTo--> release
+788,10,egg,creates,[]
+789,10,egg,squeeze,egg --HasContext--> slang <--HasContext-- squeeze
+790,10,egg,pushing,[]
+791,10,egg,water bottle,[]
+792,10,egg,lift,egg <--RelatedTo-- drop --Antonym--> lift
+793,10,egg,bottle,egg --AtLocation--> supermarket <--AtLocation-- bottle
+794,10,egg,suction,[]
+795,10,egg,press,egg --RelatedTo--> hard <--RelatedTo-- press
+796,10,egg,water,egg --RelatedTo--> shell --AtLocation--> water
+797,10,water,yolk,water --IsA--> nutrient <--RelatedTo-- yolk
+798,10,water,place,water <--RelatedTo-- level --IsA--> place
+799,10,water,release,water --MannerOf--> secrete <--Synonym-- release
+800,10,water,creates,[]
+801,10,water,squeeze,water --UsedFor--> drink <--RelatedTo-- squeeze
+802,10,water,pushing,[]
+803,10,water,water bottle,water <--RelatedTo-- water bottle
+804,10,water,lift,water --HasContext--> dialectal <--HasContext-- lift
+805,10,water,bottle,water --AtLocation--> bottle
+806,10,water,suction,[]
+807,10,water,press,water <--RelatedTo-- cast <--MannerOf-- press
+808,10,water,water,water

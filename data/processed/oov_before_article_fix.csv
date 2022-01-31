@@ -1,0 +1,11 @@
+,example,out_of_vocab
+0,1,"a drawstring bag,the woman,the only baggage"
+1,2,"the party,the cause,the host,the flu"
+2,3,"the man,a result,his enemy,the man,his enemy"
+3,4,"a party,his house,his parents,alex's parents,a party,the mess"
+4,5,"a letter,skylar,the mail,the letter"
+5,6,"the giant pile,the pipe"
+6,7,"not lawrence,interested kevin"
+7,8,"so much money,the next sentence,$,his first credit card,a job,a $10,000 debt,his card,a plan,another credit card"
+8,9,"l.,st.,a judge,l. mark bailey,st. paul,a farm,-,a 45-acre horse farm,a nice dinner"
+9,10,"the yolk,a water bottle,the yolk,the water bottle"
