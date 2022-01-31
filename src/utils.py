@@ -5,6 +5,7 @@ from typing import NamedTuple
 
 import nltk
 from nltk.stem import WordNetLemmatizer
+import joblib
 
 nltk.download("wordnet")
 nltk.download('omw-1.4')
@@ -79,7 +80,7 @@ def normalize_conceptnet(s: str) -> str:
         normalized string
     """
 
-    s = s.removeprefix("/c/en")
+    s = s.removeprefix("/c/en/")
     s = s.split("/")[0] # remove the optionally added (/n, /v, ...)
     s = s.replace("_", " ")
     s = s.casefold()
@@ -107,3 +108,7 @@ def normalize_input(s: str) -> str:
     s = __lemmatizer.lemmatize(s)
 
     return s
+
+def load_conceptnet() -> ConceptNet:
+
+    return joblib.load("../data/processed/graph_representation.joblib")
