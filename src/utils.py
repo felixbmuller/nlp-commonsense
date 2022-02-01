@@ -1,4 +1,8 @@
-
+"""
+Data structures and utility functions needed by `prepare_data` and other modules. Consists of data 
+structures for representing ConceptNet, normalization functions and a helper to load the ConceptNet 
+pickle.
+"""
 
 from dataclasses import dataclass
 from typing import NamedTuple

@@ -1,4 +1,7 @@
-from platform import node
+"""
+This module includes the path finding algorithm and the textual visualization of paths. Entry point is `find_word_path`.
+"""
+
 from typing import Iterable
 import logging
 
@@ -9,8 +12,10 @@ def search_shortest_path(
     start_idx: int,
     end_idx: int,
     adjacency_lists: dict[int, Iterable[int]],
-    max_path_len=4,
+    max_path_len,
 ) -> list:
+    """the actual implementation of a BFS. This function is completely agnostic about ConceptNet, 
+    it just works with adjacency lists of integers."""
 
     queue = [
         (start_idx, 0)
@@ -89,14 +94,12 @@ def render_path_verbose(path: list[int], graph: ConceptNet):
     return rendered
 
 def render_path_brief(path: list[int], graph: ConceptNet):
-    """this function gives a verbose textual representation for the given path, including all edges between the given nodes, node and label indices and label weights.
+    """this function gives a brief textual representation for the given path.
 
     Example
     -------
     > find_word_path("airport", "baggage", conceptnet, max_path_len=3, renderer=render_path_verbose)
-    ['airport (35496)',
-     '/r/AtLocation (idx 1, weight 3.464, reversed),/r/AtLocation (idx 1, weight 2.828, reversed)',
-     'baggage (121612)']
+    airport <--AtLocation-- baggage
     """
 
     if not path:
@@ -134,7 +137,28 @@ def find_word_path(
         start_term: str, end_term: str, 
         graph: ConceptNet, 
         max_path_len=3,
-        renderer=render_path_brief) -> list[str]:
+        renderer=render_path_brief) -> str:
+    """Find the shortest path between `start_term` and `end_term` and return its textual 
+    representation. 
+
+    Parameters
+    ----------
+    start_term : str
+        start term for path search
+    end_term : str
+        end term for path search
+    graph : ConceptNet
+        ConceptNet instance to work with
+    max_path_len : int, optional
+        maximal number of nodes in a path, by default 3
+    renderer, optional
+        function to visualize paths, by default render_path_brief
+
+    Returns
+    -------
+    str
+        path visualization
+    """
 
     start_term = normalize_input(start_term)
     end_term = normalize_input(end_term)

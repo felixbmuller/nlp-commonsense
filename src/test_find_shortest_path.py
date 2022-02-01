@@ -1,3 +1,7 @@
+"""
+some unit tests to ensure that the BFS works as expected.
+"""
+
 import unittest
 
 from find_shortest_path import *

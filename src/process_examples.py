@@ -1,3 +1,8 @@
+"""
+Functions to transform examples.txt into machine readable form and to extract terms from example 
+questions.
+"""
+
 from typing import Union
 import itertools
 

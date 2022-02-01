@@ -1,3 +1,15 @@
+"""
+This script  transforms the raw ConceptNet data into a joblib-pickled instance of `utils.ConceptNet`
+that can later be used for path extraction. It only needs to be executed once and should be executed
+via command line. 
+
+Steps
+-----
+1. Save the ConceptNet data under `../data/raw/conceptnet-assertions-5.7.0.csv.gz`
+2. Run `python prepare_data.py filter-conceptnet-en` to generate `../data/processed/en_edges.csv`
+3. Run `python prepare_data.py process-conceptnet-csv` to generate `../data/processed/graph_representation.joblib`
+"""
+
 from collections import defaultdict
 import gzip
 import json
