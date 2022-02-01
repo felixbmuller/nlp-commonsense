@@ -1,0 +1,500 @@
+
+
+\documentclass{article}
+
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{listings} % For displaying code
+\usepackage{algorithm2e} % pseudo-code
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{soul}
+
+% Colors
+\definecolor{blu}{rgb}{0,0,1}
+\def\blu#1{{\color{blu}#1}}
+\definecolor{gre}{rgb}{0,.5,0}
+\def\gre#1{{\color{gre}#1}}
+\definecolor{red}{rgb}{1,0,0}
+\def\red#1{{\color{red}#1}}
+\def\norm#1{\|#1\|}
+
+% Math
+\def\R{\mathbb{R}}
+\def\argmax{\mathop{\rm arg\,max}}
+\def\argmin{\mathop{\rm arg\,min}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\alignStar}[1]{\begin{align*}#1\end{align*}}
+\def\half{\frac 1 2}
+
+% LaTeX
+\newcommand{\fig}[2]{\includegraphics[width=#1\textwidth]{#2}}
+\newcommand{\centerfig}[2]{\begin{center}\includegraphics[width=#1\textwidth]{#2}\end{center}}
+\newcommand{\thisisstupid}{\S}
+\def\items#1{\begin{itemize}#1\end{itemize}}
+\def\enum#1{\begin{enumerate}#1\end{enumerate}}
+
+\setlist[enumerate]{topsep=0pt}
+\setlist[itemize]{topsep=0pt,noitemsep}
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TEXT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{CPSC 532V -- NLP Commonsense -- Assignment 1}
+\author{Felix Mueller}
+\date{}
+\maketitle
+
+\section{Implementing the Path Search}
+\label{sec:step-1:-implement}
+
+In this section I will mainly describe the path search. The most work
+is done in preprocessing the knowledge base, the search algorithm
+itself is a simple breadth-first search.  I will also describe the
+extraction of terms from the example questions using
+Spacy. Furthermore I will show that a maximum path length of four is
+a good choice and that the chosen approach of matching between terms
+and ConceptNet nodes works sufficiently.
+
+\subsection*{Preprocessing of the knowledge base}
+\label{sec:prepr-knowl-base}
+
+ConceptNet is used for this assignment. In order to work effectively
+with it, I downloaded the knowledgebase
+(\verb`conceptnet-assertions-5.7.0.csv.gz`) and transformed it. I
+discarded all non-English nodes (i.e. all nodes that don't start with
+\verb`/c/en`).
+
+Afterwards I normalized all node labels by removing the prefix
+(\verb`/c/en`) and possible suffixes (e.g.  \verb`/n`, \verb`/v`),
+replacing \verb`_` with a space, applying Python's \verb|casefold| and
+applying the \verb`WordNetLemmatizer` from \verb`nltk`. Most of this
+normalization is not strictly needed at this point, as labels in
+ConceptNet are already normalized. However, it is still done at this
+point to ensure that node labels and input terms from the example
+questions are normalized in exactly the same way. The normalization
+allows us to fuzzy match terms to ConceptNet nodes (e.g. \emph{mouse}
+and \emph{mice} can be matched because both are normalized to the same
+base form), while still being able to find a matching node for a term
+in $O(1)$ (on average) using Python dictionaries. Real fuzzy matching
+like substring matching would probably require at least $O(nm)$ (for
+$n$ labels with $m$ characters) or very complicated preprocessing
+which is considerably slower.
+
+%TODO fix duplicate entries issue
+
+After preprocessing, the knowledge base is represented by this six data structures:
+
+\begin{itemize}
+\item \verb`nodes_idx2name: list[str]` mapping node indices to normalized node names
+\item \verb`nodes_name2idx: dict[str, int]` mapping node names to indices
+\item \verb`labels_idx2name: list[str]` mapping edge label indices to labels
+\item \verb`labels_name2idx: dict[str, int]` mapping edge labels to indices
+\item \verb`adjacency_lists: dict[int, set[int]]` list of adjacent nodes for each node
+\item \verb`edge_descriptors: dict[tuple[int, int], set[EdgeDescriptor]]` maps a pair of indices to all
+  direct edges in ConceptNet between this two nodes. An edge descriptor contains the edge label
+  index, weight and row index in the CSV-file (for lookup of further attributes, if necessary)
+\end{itemize}
+  
+In order to enable the path search to find reversed edges, the
+adjacency lists are undirected.  \verb`edge_descriptors` in contrast is still
+directed. By combining information from both data structures, the path
+visualization function can determine if an edge was traversed in
+original or reversed direction and display it accordingly.
+
+\subsection*{Path Search Algorithm}
+\label{sec:path-finding}
+
+
+
+I implemented a standard breadth-first search for finding paths in the
+knowledge graphs. I augmented the algorithm to keep track of the
+distance between the currently traversed node and the start node.
+This information is used to stop the search after exceeding the
+maximum path length. I decided to ignore edge weights to keep the path
+finding simple, especially since ConceptNet often contains multiple
+edges between two nodes with different weights.
+
+\subsection*{Term Extraction and Normalization}
+\label{sec:term-extraction}
+
+
+
+Spacy is used for extracting terms. Given a string, all all tokens and
+noun phrases, that are not in Spacy's stopword list, are extracted as
+terms. This method allows to find all relevant terms with a high
+probability, even though it also extracts many irrelevant terms (high
+recall, low precision).  The extracted terms are normalized by
+applying Python's \verb|casefold| and the \verb`WordNetLemmatizer`
+from \verb`nltk`.  After evaluating which extracted terms could
+not be matched to ConceptNet nodes, I augmented the code to remove
+articles (\emph{the, a, an}) from noun phrases. Spacy always adds
+articles to a noun phrase if present, while ConceptNet stores node
+labels without article. This significantly reduced the number of
+out-of-vocabulary terms.  
+
+\subsection*{Maximum Path Length}
+\label{sec:maximum-path-length}
+
+I experimented with different maximum paths lengths, but I found that
+a path length of four may already need a considerable amount of time
+while not providing very useful connections. See the following examples:
+
+\begin{itemize}
+\item \texttt{checked --HasContext--> north america --HasContext-->
+    canada <--HasContext-- \newline garbage} (10 sec)
+\item \texttt{safe --RelatedTo--> heavy <--RelatedTo-- carry
+    --Antonym--> baggage} (50 sec)
+\item \texttt{excited <--HasSubevent-- score home run
+    --HasPrerequisite--> play baseball } \newline \texttt{--HasPrerequisite--> apply} (10
+  sec)
+\item \texttt{harvard --IsA--> college --HasContext--> canada
+    <--HasContext-- letter} (4 sec)
+\end{itemize}
+
+Finding a path with path lengths three on the other hand usually takes
+less than one second and often provides more useful connections (see the
+examples in section \ref{sec:step-2:-use}). Therefore I decided to use
+a maximum path length of three.
+
+
+
+
+
+\subsection*{Term Node Mismatches}
+\label{sec:evaluate-term-node}
+
+I checked all generated terms against \verb|nodes_name2idx| to see
+which ones could not be matched to a ConceptNet node.  It turned out
+that all mismatches were either noun chunks like \emph{only baggage}
+or \emph{his house}, where the relevant parts of the noun phrase could
+be matched (e.g. \emph{baggage} and \emph{house}), or rare names
+(e.g. \emph{Skylar}) or terms containing numbers like \emph{\$10,000}. Based
+on this evaluation I conclude that the node matching method employed
+works well and that fuzzy matching would bring no or very little
+advantage.
+
+\section{Apply the Search Function and Visualize the Paths}
+\label{sec:step-2:-use}
+
+I chose to represent each path separately in a textual form. An
+advantage of this representation is that it allows to very easily
+refer to path representations during the analysis in
+section \ref{sec:step-3:-analyze}.  I implemented two methods for
+representing paths.
+
+The \emph{detailed method} displays node and label indices and all edges
+between two nodes with their weights. It is useful for debugging and
+to get a feeling for the data, but it is too verbose to display many
+paths.
+
+\begin{verbatim}
+['airport (35496)',
+   '/r/AtLocation (idx 1, weight 3.464, reversed),
+    /r/AtLocation (idx 1, weight 2.828, reversed)',
+ 'baggage (121612)']
+\end{verbatim}
+
+The \emph{brief method} only shows the edge with the highest weight
+between two nodes and does not display indices or weights.
+
+\begin{verbatim}
+airport <--AtLocation-- baggage
+\end{verbatim}
+
+For each example question, I tried to find a path between each
+extracted term of the question plus context and the answer
+choised.   Because of the high number of extracted paths (332 extracted
+paths in total for 810 possible combinations of terms), I will only
+present some paths for two example questions here. All paths for all
+examples can be found in the attached file
+\verb|paths_for_examples.csv|.
+
+
+\paragraph{Example 1 (CommonSenseQA)}
+
+\begin{description}
+\item[Question] The only baggage the woman checked was a drawstring
+bag, where was she heading with it?
+\item[Choices] garbage can, military, jewelry store, safe, airport
+\item[Question Terms] drawstring bag, bag, baggage, checked,
+  drawstring, heading, \st{only baggage}\footnote{This was the only
+    term in this example that could not be matched to any ConceptNet node.},
+  wa\footnote{For some reason, the WordNetLemmatizer normalizes
+    \emph{was} to \emph{wa} instead of \emph{being}. But as this behavior is
+    consistent for ConceptNet nodes as well as input terms it does
+    not affect node matching.}, woman
+  
+\item[Choices Terms] airport, garbage, jewelry, jewelry store,
+  military, safe, store
+
+  
+\item[Paths (excerpt)] \,
+
+  There were 63 possible combinations of question/context terms and choices
+  terms and there were paths found for 39 of them.
+
+  \begin{itemize}
+  \item \texttt{drawstring bag --AtLocation--> military}
+  \item \texttt{drawstring bag --AtLocation--> jewelry store
+      <--AtLocation-- jewelry}
+  \item \texttt{drawstring bag --AtLocation--> safe}
+  \item \texttt{drawstring bag --AtLocation--> store}
+  \item \texttt{drawstring bag --AtLocation--> garbage can
+      --DerivedFrom--> garbage}
+  \item \texttt{drawstring bag --AtLocation--> airport}
+  \item \texttt{baggage --HasContext--> military}
+  \item \texttt{baggage --IsA--> case --RelatedTo--> jewelry}
+  \item \texttt{baggage <--IsA-- purse --AtLocation--> store}
+  \item \texttt{baggage <--RelatedTo-- curb service --RelatedTo--> garbage}
+  \item \texttt{baggage --AtLocation--> airport}
+  \item no paths found between baggage and jewelry store or safe
+  \item \texttt{checked --HasContext--> north america <--HasContext-- military}
+  \item no other paths found for checked (esp. not with airport)
+
+  \end{itemize}
+
+\end{description}
+
+\paragraph{Example 3 (COPA)}
+
+\,
+
+
+\begin{description}
+\item[Context/Question] The man uncovered incriminating evidence
+  against his enemy. What happened as a result?
+\item[Choices] The man avoided his enemy, The man blackmailed his enemy.
+\item[Question Terms] enemy, evidence, happened, \st{his enemy},
+  incriminating, man, result, uncovered
+  
+\item[Choices Terms] avoided, blackmailed, enemy, \st{his enemy}, man
+
+  
+\item[Paths] \,
+
+  \begin{itemize}
+  \item \texttt{enemy --RelatedTo--> guy --IsA--> man}
+  \item \texttt{enemy --RelatedTo--> person --NotDesires--> avoided}
+  \item \texttt{man --RelatedTo--> person --NotDesires--> avoided}
+  \item \texttt{evidence <--Desires-- person <--RelatedTo-- enemy}
+  \item \texttt{evidence <--RelatedTo-- manufacture --RelatedTo--> man}
+  \item \texttt{evidence <--Desires-- person --NotDesires--> avoided}
+  \item \texttt{result <--RelatedTo-- issue --RelatedTo--> enemy}
+  \item \texttt{result <--RelatedTo-- work <--MannerOf-- man}
+  \item \texttt{result <--Desires-- person --NotDesires--> avoided}
+  \item \texttt{happened <--RelatedTo-- history --RelatedTo--> man}
+   
+  \end{itemize}
+
+\end{description}
+
+
+
+
+
+\section{Analysis of Extracted Paths}
+\label{sec:step-3:-analyze}
+
+In this section I will analyze the extracted paths from step 2 and
+examine them in terms of most common/accurate/reliable/useful
+knowledge.  I will also describe problems of the current path search
+approach and options to solve or mitigate them.
+
+\subsection*{Paths and Types of Knowledge}
+\label{sec:which-types-knowl}
+
+
+In order to get additional information to aid answering the questions
+in this section, I calculated how often which relation appears in the
+filtered ConceptNet containing only English nodes. This is the Top 10:
+
+\begin{table}[h]
+  \center
+  \begin{tabular}[h]{lr}
+    \hline
+    \textbf{Relation} & \textbf{Absolute Frequency} \\
+    \hline
+\texttt{RelatedTo}        &            1703582 \\
+\texttt{FormOf}               &         378859 \\
+\texttt{DerivedFrom}         &          325374 \\
+\texttt{HasContext}          &          232935 \\
+\texttt{IsA}                &           230137 \\
+\texttt{Synonym}            &           222156 \\
+\texttt{UsedFor}            &            39790 \\
+\texttt{EtymologicallyRelatedTo}   &     32075 \\
+\texttt{SimilarTo}               &       30280 \\
+    \texttt{AtLocation}             &        27797 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Let us have a look at how common, accurate and reliable different types
+of knowledge are. All relations presented in the following paragraphs
+were part of an extracted paths from one of the example questions.
+
+The most common relation, both in the generated paths as well as in
+the whole dataset, is \texttt{RelatedTo}. Edges of this type sometimes
+express very useful knowledge (\texttt{egg --RelatedTo-->
+  shell}\footnote{There might have been other edges between egg and
+  shell, but RelatedTo was the one with the highest weight.}), but
+often they are rather vague (\texttt{happened <--RelatedTo-- history})
+or not useful at all (\texttt{town <--RelatedTo-- hell}, \texttt{woman
+  <--RelatedTo-- shelter}). It is hard to judge the accuracy of
+\texttt{RelatedTo} knowledge, as there is virtually nothing for which
+one cannot find a relation. In that sense, the information provided by
+\texttt{RelatedTo} is technically very accurate.  However, many
+\texttt{RelatedTo} information are not useful in the sense that they do not
+provide actual insights that can be used for some downstream
+task. \texttt{HasContext} is another example of a common type of knowledge in
+ConceptNet that provides some useful information
+(e.g. \texttt{host --HasContext--> computing <--HasContext-- catch}),
+but also a lot of very vague connections with limited use
+(e.g. \texttt{game --HasContext--> military}).
+
+\texttt{AtLocation} relations are also very common, but unlike
+\texttt{RelatedTo} or \texttt{HasContext} they provide a more specific
+meaning which probably increases their use in some contexts.  However,
+as nearly anything can be found anywhere (with different likelihoods),
+the same arguments about accuracy, reliability and usefulness that
+were true for \texttt{RelatedTo} also apply to \texttt{AtLoaction}.
+
+In general however, relations with a more specific meaning tend to
+provide more useful information. This is true for common relations
+(\texttt{alex --IsA--> person}, \texttt{party --UsedFor--> relaxing})
+as well as less common relations (\texttt{house <--PartOf--
+  shower}). In general the accuracy of this knowledge is very high,
+especially when we take into account that it is more specific and thus
+more easily falsifiable than more vague knowledge
+(e.g. \texttt{RelatedTo}). I only found few connections which were
+questionable (e.g. \texttt{parent --IsA--> animal}, \texttt{hell
+  --IsA--> trouble}, \texttt{baby <--IsA-- alex}).
+
+Let us now have a look at which type of knowledge is most useful for
+different example questions. For \emph{example 1}, location-based
+information is very useful, e.g. that \emph{baggage} and
+\emph{drawstring bags} are often found in \emph{airports}. Both
+information were sucessfully extracted along with some undesired
+relations to wrong answers, like \emph{garbage can}. Also relatedness
+information would have been useful here, e.g. that \emph{checking} is
+a process that usually happens at airports. This was not extracted by
+the path search algorithm. For \emph{example 2}, the path search did
+not extract useful information, only futile paths like \texttt{party
+  --IsA--> person --NotDesires--> flu} or \texttt{host --HasContext-->
+  computing <--HasContext-- catch}. More complex knowledge would have
+been necessary here. Specifically, we would need the social knowledge
+that it is deemed as irresponsible to hold a party when having the
+flu, while accidently catching the flu at a party is usually
+considered an acceptable risk.  \emph{Example 3} could be answered by
+using knowledge about the relation between \emph{incriminating
+  evidence}, \emph{blackmail} and \emph{enemy}, which is stronger than
+the relation between \emph{incriminating evidence}, \emph{avoiding}
+and \emph{enemy}. However, the path search fails to find meaningful
+paths between these terms. In order to answer \emph{example 4}, we
+mainly need social knowledge, i.e. about parents punishing their
+children for wrongdoing. However, the path search fails to find a
+connection between \emph{parent} and \emph{punish} and only found
+futile knowledge about parties (e.g. \texttt{party --RelatedTo--> game
+  <--RelatedTo-- trouble} or \texttt{party --UsedFor--> relaxing
+  <--HasLastSubevent-- punish}).
+
+For \emph{example 5}, the most useful knowledge found is a relation
+between \emph{Harvard} and \emph{applying}. However, to answer the
+question correctly, one would need the factual knowledge that Harvard
+answers to applications, but does not request them. The path search
+actually found the key information for \emph{example 6}, which is the
+factual knowledge that pipes are rigid. However, it also found an
+indirect connection between \emph{rigid} and \emph{piles}
+(\texttt{rigid <--RelatedTo-- set --RelatedTo--> pile}). In
+\emph{example 7} the method of only comparing terms in the
+question/context with terms of the choices shows its limitations.  The
+path search is not able to extract any useful information as the
+choices only contain two proper names. We would need factual knowledge
+about the connection between New York City and crowds of people to
+solve this question.  For \emph{examples 8 and 9}, we would need
+knowledge about human reactions, e.g. that one should not continue as
+before after recognizing something as foolish or to celebrate after an
+event one did not dream of. Of course, factual knowledge is also
+required, e.g. about the difference between a plan for repayment and
+another credit card.  For \emph{example 10}, one would need specific
+factual knowledge, i.e. that releasing a pressed water bottle creates
+suction. This information is  not present in ConceptNet at all.
+
+
+
+\subsection*{Problems and Opportunities for Improvement}
+\label{sec:probl-opport-impr}
+
+An obvious problem with the current approach is, that there is no way
+to distinquish between very general and rather unlikely relations
+(\texttt{drawstring bag --AtLocation--> garbage can}) and more
+specific and likely relations (\texttt{infantrywoman --HasContext-->
+  military}).  This problem could be solved by taking the edge weights
+into account, provided that they actually contain useful information
+about the specificity and likeliness of relations.  Another limitation
+is that we cannot find long but likely paths like \texttt{flu
+  --typeof--> influenza --typeof--> disease <--synonym--> illness
+  <--usedfor-- staying in bed}. This could be solved by using a
+flexible cutoff based on the weights instead of a hard limit of at
+most three nodes.  For both solutions, one must take into account that
+there are often multiple edges with different weights and labels
+between two nodes.
+
+In order to solve complex questions, like most of the examples questions, one of
+course also needs to combine the path search with natural language models
+that are capable of extracting the meaning of a sentence.
+
+
+
+% very vague knowledge like RelatedTo does not express a lot of
+% information (e.g. woman <--RelatedTo-- shelter, baggage
+% <--RelatedTo-- curb service, town <--RelatedTo-- hell). But might be very useful in some situations (e.g. egg --RelatedTo--> shell, this is the highes weighting edge!) At Location also appears often in the
+% generated paths, especially with example 1.  mor precise as
+% RelatedTo, but still very broad what makes it hard to distinquish
+% useful information (e.g. drawstring bag --AtLocation--> airport) from overly
+% common ones (e.g. drawstring bag --AtLocation--> garbage can)
+
+% other frequent/useless occurences: HasContext,
+% frequent but useful: IsA (alex --IsA--> person), UsedFor (party --UsedFor--> relaxing)
+% seldom but useless: Desires/ NotDesires: result <--Desires-- person --NotDesires--> avoided
+% weird factual claims: baby <--IsA-- alex
+% useful and seldom: house <--PartOf-- shower
+
+% Most useful for each instance:
+
+% Example 1: AtLocation information, but more selective. Almost everything can be found anywhere
+
+% Example 2: very hard to solve with word-path matching, would require a deeper understanding of moral aspects (i.e. irresponsible to hold a party while having a flu), (catching a flu on a party with healthy adults is acceptable risk). Path finding mostly extracted RelatedTo, IsA, MannerOf, but this are only isolated connections between words, no context
+
+% Example 3: Most useful would be knowledge about relatedness of incriminating evidence, blackmail, and enemy, but this was not found bypath search (or only in useless paths, e.g. evidence <--Desires-- person <--RelatedTo-- enemy
+
+
+% do better -> use weights, to distinguish overly common (drawstring bag --AtLocation--> garbage can) from specific information (drawstring bag --AtLocation--> airport). Cave: Need to evaluate, if the ConceptNet weights are good enough for this purpose first.
+
+% fixed overall likeliness instead of fixed path length
+% combine information from multiple edges
+
+% - tuning optimal path length -> 3
+% - removing a/the from noun phrases
+% - only use the occurence without /n etc suffix
+% - deal with multiple edges
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% Local variables:
+%%% End: 
+%  LocalWords:  
