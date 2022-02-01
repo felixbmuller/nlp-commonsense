@@ -69,7 +69,7 @@ and ConceptNet nodes works sufficiently.
 \label{sec:prepr-knowl-base}
 
 ConceptNet is used for this assignment. In order to work effectively
-with it, I downloaded the knowledgebase
+with it, I downloaded the knowledge base
 (\verb`conceptnet-assertions-5.7.0.csv.gz`) and transformed it. I
 discarded all non-English nodes (i.e. all nodes that don't start with
 \verb`/c/en`).
@@ -213,7 +213,7 @@ airport <--AtLocation-- baggage
 
 For each example question, I tried to find a path between each
 extracted term of the question plus context and the answer
-choised.   Because of the high number of extracted paths (332 extracted
+choices.   Because of the high number of extracted paths (332 extracted
 paths in total for 810 possible combinations of terms), I will only
 present some paths for two example questions here. All paths for all
 examples can be found in the attached file
@@ -343,7 +343,7 @@ of knowledge are. All relations presented in the following paragraphs
 were part of an extracted paths from one of the example questions.
 
 The most common relation, both in the generated paths as well as in
-the whole dataset, is \texttt{RelatedTo}. Edges of this type sometimes
+the whole data set, is \texttt{RelatedTo}. Edges of this type sometimes
 express very useful knowledge (\texttt{egg --RelatedTo-->
   shell}\footnote{There might have been other edges between egg and
   shell, but RelatedTo was the one with the highest weight.}), but
@@ -383,7 +383,7 @@ Let us now have a look at which type of knowledge is most useful for
 different example questions. For \emph{example 1}, location-based
 information is very useful, e.g. that \emph{baggage} and
 \emph{drawstring bags} are often found in \emph{airports}. Both
-information were sucessfully extracted along with some undesired
+information were successfully extracted along with some undesired
 relations to wrong answers, like \emph{garbage can}. Also relatedness
 information would have been useful here, e.g. that \emph{checking} is
 a process that usually happens at airports. This was not extracted by
@@ -393,7 +393,7 @@ not extract useful information, only futile paths like \texttt{party
   computing <--HasContext-- catch}. More complex knowledge would have
 been necessary here. Specifically, we would need the social knowledge
 that it is deemed as irresponsible to hold a party when having the
-flu, while accidently catching the flu at a party is usually
+flu, while accidentally catching the flu at a party is usually
 considered an acceptable risk.  \emph{Example 3} could be answered by
 using knowledge about the relation between \emph{incriminating
   evidence}, \emph{blackmail} and \emph{enemy}, which is stronger than
@@ -435,7 +435,7 @@ suction. This information is  not present in ConceptNet at all.
 \label{sec:probl-opport-impr}
 
 An obvious problem with the current approach is, that there is no way
-to distinquish between very general and rather unlikely relations
+to distinguish between very general and rather unlikely relations
 (\texttt{drawstring bag --AtLocation--> garbage can}) and more
 specific and likely relations (\texttt{infantrywoman --HasContext-->
   military}).  This problem could be solved by taking the edge weights
