@@ -2,10 +2,11 @@
 This module includes the path finding algorithm and the textual visualization of paths. Entry point is `find_word_path`.
 """
 
-from typing import Iterable
+from typing import Any, Iterable, Union
 import logging
 
 from utils import ConceptNet, normalize_input
+from renderer import render_path_brief
 
 
 def search_shortest_path(
@@ -58,86 +59,12 @@ def search_shortest_path(
 
     return []
 
-def render_path_verbose(path: list[int], graph: ConceptNet):
-    """this function gives a verbose textual representation for the given path, including all edges between the given nodes, node and label indices and label weights.
-
-    Example
-    -------
-    > find_word_path("airport", "baggage", conceptnet, max_path_len=3, renderer=render_path_verbose)
-    ['airport (35496)',
-     '/r/AtLocation (idx 1, weight 3.464, reversed),/r/AtLocation (idx 1, weight 2.828, reversed)',
-     'baggage (121612)']
-    """
-
-    if not path:
-        return []
-
-    rendered = [f"{graph.nodes_idx2name[path[0]]} ({path[0]})"]
-
-    for path_idx, node_idx in enumerate(path[1:], start=1):
-        prev_idx = path[path_idx-1] # index of the previous node in path for edge lookup
-
-        if (prev_idx, node_idx) in graph.edge_descriptors:
-            edges = graph.edge_descriptors[(prev_idx, node_idx)]
-            reverse_edge = False
-        elif (node_idx, prev_idx) in graph.edge_descriptors:
-            edges = graph.edge_descriptors[(node_idx, prev_idx)]
-            reverse_edge = True
-        else:
-            raise ValueError(f"Illegal State: edge descriptors missing for edge present in graph ({node_idx=}, {prev_idx=})")
-
-        str_edge = ",".join(f"{graph.labels_idx2name[e.label_idx]} (idx {e.label_idx}, weight {e.weight}{', reversed' if reverse_edge else ''})" for e in edges)
-
-        rendered.append(str_edge)
-        rendered.append(f"{graph.nodes_idx2name[node_idx]} ({node_idx})")
-
-    return rendered
-
-def render_path_brief(path: list[int], graph: ConceptNet):
-    """this function gives a brief textual representation for the given path.
-
-    Example
-    -------
-    > find_word_path("airport", "baggage", conceptnet, max_path_len=3, renderer=render_path_verbose)
-    airport <--AtLocation-- baggage
-    """
-
-    if not path:
-        return []
-
-    rendered = [graph.nodes_idx2name[path[0]]]
-
-    for path_idx, node_idx in enumerate(path[1:], start=1):
-        prev_idx = path[path_idx-1] # index of the previous node in path for edge lookup
-
-        if (prev_idx, node_idx) in graph.edge_descriptors:
-            edges = graph.edge_descriptors[(prev_idx, node_idx)]
-            reverse_edge = False
-        elif (node_idx, prev_idx) in graph.edge_descriptors:
-            edges = graph.edge_descriptors[(node_idx, prev_idx)]
-            reverse_edge = True
-        else:
-            raise ValueError(f"Illegal State: edge descriptors missing for edge present in graph ({node_idx=}, {prev_idx=})")
-
-        best_edge = max(edges, key=lambda x: x.weight)
-        best_edge_str = graph.labels_idx2name[best_edge.label_idx].removeprefix("/r/")
-
-        if not reverse_edge:
-            best_edge_str = f"--{best_edge_str}-->"
-        else:
-            best_edge_str = f"<--{best_edge_str}--"
-        
-
-        rendered.append(best_edge_str)
-        rendered.append(graph.nodes_idx2name[node_idx])
-
-    return " ".join(rendered)
 
 def find_word_path(
         start_term: str, end_term: str, 
         graph: ConceptNet, 
-        max_path_len=3,
-        renderer=render_path_brief) -> str:
+        max_path_len: int =3,
+        renderer=render_path_brief) -> Union[str, list[int]]:
     """Find the shortest path between `start_term` and `end_term` and return its textual 
     representation. 
 
@@ -152,12 +79,14 @@ def find_word_path(
     max_path_len : int, optional
         maximal number of nodes in a path, by default 3
     renderer, optional
-        function to visualize paths, by default render_path_brief
+        function to visualize paths, by default render_path_brief. If None, the raw path (a list of int's) is returned.
 
     Returns
     -------
     str
         path visualization
+    list[int]
+        raw path, only returned if renderer is None
     """
 
     start_term = normalize_input(start_term)
@@ -181,8 +110,10 @@ def find_word_path(
         start_idx, end_idx, graph.adjacency_lists, max_path_len=max_path_len
     )
 
-    return renderer(path, graph)
-
+    if renderer:
+        return renderer(path, graph)
+    else:
+        return path
 
 
         
