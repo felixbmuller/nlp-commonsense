@@ -66,7 +66,7 @@ class ConceptNet:
     labels_idx2name : List[str]
     labels_name2idx : Dict[str, int]
 
-    adjacency_lists : Dict[int, set[int]]
+    adjacency_lists : Dict[int, Set[int]]
     edge_descriptors : Dict[Tuple[int, int], Set[EdgeDescriptor]]
 
 def normalize_conceptnet(s: str) -> str:

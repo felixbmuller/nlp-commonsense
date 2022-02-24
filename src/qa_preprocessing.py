@@ -1,4 +1,5 @@
 from math import prod
+from typing import List
 
 from process_examples import extract_terms
 from find_shortest_path import find_word_path
@@ -8,7 +9,7 @@ from utils import ConceptNet
 
 def get_knowledge_for_example(
     premise_question: str, choice: str, conceptnet: ConceptNet, max_paths: int
-) -> list[str]:
+) -> List[str]:
     """Return a list of paths connecting terms from the premise with terms from the choice. Paths are extracted from a knowledge base and encoded in natural language. If more than max_paths paths are found, paths are selected primarily based lower number of nodes and secondarily on higher product of edge weights.
 
     Assignment 2.

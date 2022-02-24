@@ -13,7 +13,7 @@ import utils as U
 nlp = spacy.load('en_core_web_sm')
 stopwords = set(nlp.Defaults.stop_words).union({",", ".", "?", ":", ";"})
 
-def load_examples() -> List[Dict[str, Union[str, list[str]]]]:
+def load_examples() -> List[Dict[str, Union[str, List[str]]]]:
     """Quick and dirty parser to turn examples.txt into a machine-readable form.
 
     Returns
