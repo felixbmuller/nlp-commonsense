@@ -113,6 +113,9 @@ def normalize_input(s: str) -> str:
 
     return s
 
-def load_conceptnet() -> ConceptNet:
+def load_conceptnet(load_compressed: bool =False) -> ConceptNet:
 
-    return joblib.load("../data/processed/graph_representation.joblib")
+    if load_compressed:
+        return joblib.load("../data/processed/graph_representation_compressed.joblib")
+    else:
+        return joblib.load("../data/processed/graph_representation.joblib")
