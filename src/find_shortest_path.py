@@ -39,7 +39,7 @@ def search_shortest_path(
 
             pred = predecessor_idx[node]
             while pred != -1:
-                logging.debug(f"    {pred=}")
+                logging.debug(f"    {pred}")
                 path.insert(0, pred)
                 pred = predecessor_idx[pred]
 
@@ -92,18 +92,18 @@ def find_word_path(
     start_term = normalize_input(start_term)
     end_term = normalize_input(end_term)
 
-    logging.info(f"after normalization: {start_term=}, {end_term=}")
+    logging.info(f"after normalization: {start_term}, {end_term}")
 
     if start_term in graph.nodes_name2idx:
         start_idx = graph.nodes_name2idx[start_term]
     else:
-        logging.warning(f"{start_term=} not in graph, skipping")
+        logging.warning(f"start {start_term} not in graph, skipping")
         return []
 
     if end_term in graph.nodes_name2idx:
         end_idx = graph.nodes_name2idx[end_term]
     else:
-        logging.warning(f"{end_term=} not in graph, skipping")
+        logging.warning(f"end {end_term} not in graph, skipping")
         return []
 
     path = search_shortest_path(

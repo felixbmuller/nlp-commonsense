@@ -31,7 +31,7 @@ def render_path_verbose(path: List[int], graph: ConceptNet):
             reverse_edge = True
         else:
             raise ValueError(
-                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx=}, {prev_idx=})"
+                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx}, {prev_idx})"
             )
 
         str_edge = ",".join(
@@ -72,7 +72,7 @@ def render_path_brief(path: List[int], graph: ConceptNet):
             reverse_edge = True
         else:
             raise ValueError(
-                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx=}, {prev_idx=})"
+                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx}, {prev_idx})"
             )
 
         best_edge = max(edges, key=lambda x: x.weight)
@@ -166,7 +166,7 @@ def render_path_natural(path: List[int], graph: ConceptNet) -> Tuple[str, List[f
             reverse_edge = True
         else:
             raise ValueError(
-                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx=}, {prev_idx=})"
+                f"Illegal State: edge descriptors missing for edge present in graph ({node_idx}, {prev_idx})"
             )
 
         best_edge = max(edges, key=lambda x: x.weight)
