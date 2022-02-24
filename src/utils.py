@@ -5,7 +5,9 @@ pickle.
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, NamedTuple, Set, Tuple
+from functools import reduce
+import operator
+from typing import Dict, Iterable, List, NamedTuple, Set, Tuple
 
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -118,6 +120,9 @@ def normalize_input(s: str) -> str:
     s = __lemmatizer.lemmatize(s)
 
     return s
+
+def prod(vals: Iterable[float]) -> float:
+    return reduce(operator.mul, vals, 1)
 
 def load_conceptnet(load_compressed: bool =False) -> ConceptNet:
 

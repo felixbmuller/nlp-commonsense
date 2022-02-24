@@ -1,10 +1,9 @@
-from math import prod
 from typing import List
 
 from process_examples import extract_terms
 from find_shortest_path import find_word_path
 from renderer import render_path_natural
-from utils import ConceptNet
+from utils import ConceptNet, prod
 
 
 def get_knowledge_for_example(
