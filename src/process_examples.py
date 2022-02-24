@@ -40,7 +40,7 @@ def load_examples() -> List[Dict[str, Union[str, List[str]]]]:
 
         question = next(
             (
-                p.removeprefix("Question:").strip()
+                U.removeprefix(p, "Question:").strip()
                 for p in parts
                 if p.startswith("Question: ")
             ),
@@ -48,7 +48,7 @@ def load_examples() -> List[Dict[str, Union[str, List[str]]]]:
         )
         context = next(
             (
-                p.removeprefix("Context:").strip()
+                U.removeprefix(p, "Context:").strip()
                 for p in parts
                 if p.startswith("Context: ")
             ),
@@ -84,7 +84,7 @@ def extract_terms(input: str) -> Set[str]:
         if U.normalize_input(t.text) not in stopwords
     ]
     token_texts = set(
-        t.removeprefix("the ").removeprefix("a ").removeprefix("an ")
+        U.removeprefix(U.removeprefix(U.removeprefix(t, "the "), "a "), "an ")
         for t in token_texts
     )
 

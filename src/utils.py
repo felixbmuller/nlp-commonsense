@@ -69,6 +69,12 @@ class ConceptNet:
     adjacency_lists : Dict[int, Set[int]]
     edge_descriptors : Dict[Tuple[int, int], Set[EdgeDescriptor]]
 
+def removeprefix(s: str, prefix: str) -> str:
+    if s.startswith(prefix):
+        return s[len(prefix):]
+    else:
+        return s
+
 def normalize_conceptnet(s: str) -> str:
     """Normalize a ConceptNet node to ensure that matching between example words and nodes in 
     ConceptNet works.
@@ -84,7 +90,7 @@ def normalize_conceptnet(s: str) -> str:
         normalized string
     """
 
-    s = s.removeprefix("/c/en/")
+    s = removeprefix(s, "/c/en/")
     s = s.split("/")[0] # remove the optionally added (/n, /v, ...)
     s = s.replace("_", " ")
     s = s.casefold()

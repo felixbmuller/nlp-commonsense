@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from utils import ConceptNet
+from utils import ConceptNet, removeprefix
 
 
 def render_path_verbose(path: List[int], graph: ConceptNet):
@@ -76,7 +76,7 @@ def render_path_brief(path: List[int], graph: ConceptNet):
             )
 
         best_edge = max(edges, key=lambda x: x.weight)
-        best_edge_str = graph.labels_idx2name[best_edge.label_idx].removeprefix("/r/")
+        best_edge_str = removeprefix(graph.labels_idx2name[best_edge.label_idx], "/r/")
 
         if not reverse_edge:
             best_edge_str = f"--{best_edge_str}-->"
@@ -170,7 +170,7 @@ def render_path_natural(path: List[int], graph: ConceptNet) -> Tuple[str, List[f
             )
 
         best_edge = max(edges, key=lambda x: x.weight)
-        best_edge_str = graph.labels_idx2name[best_edge.label_idx].removeprefix("/r/")
+        best_edge_str = removeprefix(graph.labels_idx2name[best_edge.label_idx], "/r/")
 
         if best_edge_str not in RELATION_MAP:
             raise ValueError(f"edge type {best_edge_str} not in RELATION_MAP")
