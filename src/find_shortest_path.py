@@ -2,7 +2,7 @@
 This module includes the path finding algorithm and the textual visualization of paths. Entry point is `find_word_path`.
 """
 
-from typing import Any, Iterable, Union
+from typing import Any, Dict, Iterable, List, Union
 import logging
 
 from utils import ConceptNet, normalize_input
@@ -12,7 +12,7 @@ from renderer import render_path_brief
 def search_shortest_path(
     start_idx: int,
     end_idx: int,
-    adjacency_lists: dict[int, Iterable[int]],
+    adjacency_lists: Dict[int, Iterable[int]],
     max_path_len,
 ) -> list:
     """the actual implementation of a BFS. This function is completely agnostic about ConceptNet, 
@@ -64,7 +64,7 @@ def find_word_path(
         start_term: str, end_term: str, 
         graph: ConceptNet, 
         max_path_len: int =3,
-        renderer=render_path_brief) -> Union[str, list[int]]:
+        renderer=render_path_brief) -> Union[str, List[int]]:
     """Find the shortest path between `start_term` and `end_term` and return its textual 
     representation. 
 

@@ -5,7 +5,7 @@ pickle.
 """
 
 from dataclasses import dataclass
-from typing import NamedTuple
+from typing import Dict, List, NamedTuple, Set, Tuple
 
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -60,14 +60,14 @@ class ConceptNet:
         maps a pair of indices to all direct edges in ConceptNet between this two nodes. edges are described via EdgeDescriptors. Edges are treated as *directed* here, i.e. if an edge is in `adjacency_lists`, but not in `edge_descriptors` it is an edge not originally present in ConceptNet and one must look up the reverse edge in `edge_descriptor`.
     """
 
-    nodes_idx2name : list[str]
-    nodes_name2idx : dict[str, int]
+    nodes_idx2name : List[str]
+    nodes_name2idx : Dict[str, int]
 
-    labels_idx2name : list[str]
-    labels_name2idx : dict[str, int]
+    labels_idx2name : List[str]
+    labels_name2idx : Dict[str, int]
 
-    adjacency_lists : dict[int, set[int]]
-    edge_descriptors : dict[tuple[int, int], set[EdgeDescriptor]]
+    adjacency_lists : Dict[int, set[int]]
+    edge_descriptors : Dict[Tuple[int, int], Set[EdgeDescriptor]]
 
 def normalize_conceptnet(s: str) -> str:
     """Normalize a ConceptNet node to ensure that matching between example words and nodes in 

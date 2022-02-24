@@ -3,7 +3,7 @@ Functions to transform examples.txt into machine readable form and to extract te
 questions.
 """
 
-from typing import Union
+from typing import Dict, List, Set, Tuple, Union
 import itertools
 
 import spacy
@@ -13,7 +13,7 @@ import utils as U
 nlp = spacy.load('en_core_web_sm')
 stopwords = set(nlp.Defaults.stop_words).union({",", ".", "?", ":", ";"})
 
-def load_examples() -> list[dict[str, Union[str, list[str]]]]:
+def load_examples() -> List[Dict[str, Union[str, list[str]]]]:
     """Quick and dirty parser to turn examples.txt into a machine-readable form.
 
     Returns
@@ -45,7 +45,7 @@ def load_examples() -> list[dict[str, Union[str, list[str]]]]:
 
     return parsed
     
-def extract_terms(input: str) -> set[str]:
+def extract_terms(input: str) -> Set[str]:
     """extract terms from a string. Terms are all tokens and noun chunks that are no stopwords. Spacy is used for processing
 
     Parameters
@@ -67,7 +67,7 @@ def extract_terms(input: str) -> set[str]:
 
     return token_texts
 
-def extract_terms_from_example(example: dict) -> tuple[set[str], set[str]]:
+def extract_terms_from_example(example: dict) -> Tuple[Set[str], Set[str]]:
     """extract terms from an example using `extract_terms`. 
 
     Parameters

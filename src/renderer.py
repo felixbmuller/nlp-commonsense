@@ -1,7 +1,8 @@
+from typing import List, Tuple
 from utils import ConceptNet
 
 
-def render_path_verbose(path: list[int], graph: ConceptNet):
+def render_path_verbose(path: List[int], graph: ConceptNet):
     """this function gives a verbose textual representation for the given path, including all edges between the given nodes, node and label indices and label weights.
 
     Example
@@ -44,7 +45,7 @@ def render_path_verbose(path: list[int], graph: ConceptNet):
     return rendered
 
 
-def render_path_brief(path: list[int], graph: ConceptNet):
+def render_path_brief(path: List[int], graph: ConceptNet):
     """this function gives a brief textual representation for the given path.
 
     Example
@@ -135,7 +136,7 @@ RELATION_MAP = {
 }
 
 
-def render_path_natural(path: list[int], graph: ConceptNet) -> tuple[str, list[float]]:
+def render_path_natural(path: List[int], graph: ConceptNet) -> Tuple[str, List[float]]:
     """This function gives a natural language representation of the path using RELATION_MAP. It also returns the weight of all edges involved.
 
     Assignment 2.
