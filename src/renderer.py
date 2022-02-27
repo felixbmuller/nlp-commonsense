@@ -148,7 +148,7 @@ def render_path_natural(path: List[int], graph: ConceptNet) -> Tuple[str, List[f
     """
 
     if not path:
-        return []
+        return "", []
 
     rendered = []
     weights = []

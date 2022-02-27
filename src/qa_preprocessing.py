@@ -41,12 +41,13 @@ def get_knowledge_for_example(
 
             context, weights = render_path_natural(p, conceptnet)
 
-            paths.append((context, weights))
+            if context:
+                paths.append((context, weights))
 
     if len(paths) > max_paths:
         # Too many paths, need to select the most relevant ones
 
-        # Sort the paths using the ascending number of paths (= number of weights) as primary key
+        # Sort the paths using the ascending number of edges (= number of weights) as primary key
         # and the descending product of weights as secondary key
         paths.sort(key=lambda x: prod(x[1]), reverse=True)
         paths.sort(key=lambda x: len(x[1]))
