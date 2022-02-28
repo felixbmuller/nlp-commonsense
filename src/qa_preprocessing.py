@@ -55,6 +55,6 @@ def get_knowledge_for_example(
         paths = paths[:max_paths]
 
     if not raw_output:
-        return "".join(context for context, _ in paths)
+        return " ".join(context for context, _ in paths)
     else:
         return paths
