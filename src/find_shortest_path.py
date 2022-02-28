@@ -28,18 +28,18 @@ def search_shortest_path(
     while queue:
         node, path_len = queue.pop(0)
 
-        logging.debug(f"Processing {node} (path len {path_len})")
+        #logging.debug(f"Processing {node} (path len {path_len})")
 
         if node == end_idx:
 
-            logging.debug("  Final node, building path")
+            #logging.debug("  Final node, building path")
 
             # build path in reverse
             path = [node]
 
             pred = predecessor_idx[node]
             while pred != -1:
-                logging.debug(f"    {pred}")
+                #logging.debug(f"    {pred}")
                 path.insert(0, pred)
                 pred = predecessor_idx[pred]
 
@@ -49,12 +49,12 @@ def search_shortest_path(
             if neighbour in predecessor_idx:
                 continue
 
-            logging.debug(f"  Processing unseen neighbor {neighbour}")
+            #logging.debug(f"  Processing unseen neighbor {neighbour}")
 
             predecessor_idx[neighbour] = node
 
             if path_len + 1 < max_path_len:
-                logging.debug("   Adding node to queue")
+                #logging.debug("   Adding node to queue")
                 queue.append((neighbour, path_len + 1))
 
     return []
@@ -92,18 +92,18 @@ def find_word_path(
     start_term = normalize_input(start_term)
     end_term = normalize_input(end_term)
 
-    logging.info(f"after normalization: {start_term}, {end_term}")
+    #logging.info(f"after normalization: {start_term}, {end_term}")
 
     if start_term in graph.nodes_name2idx:
         start_idx = graph.nodes_name2idx[start_term]
     else:
-        logging.warning(f"start {start_term} not in graph, skipping")
+        #logging.warning(f"start {start_term} not in graph, skipping")
         return []
 
     if end_term in graph.nodes_name2idx:
         end_idx = graph.nodes_name2idx[end_term]
     else:
-        logging.warning(f"end {end_term} not in graph, skipping")
+        #logging.warning(f"end {end_term} not in graph, skipping")
         return []
 
     path = search_shortest_path(
