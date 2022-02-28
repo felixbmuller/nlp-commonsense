@@ -111,6 +111,7 @@ RELATION_MAP = {
     "Desires": "{0} wants {1}",
     "CreatedBy": "{1} is created by {0}",
     "Synonyms": "{0} and {1} have similar meanings",
+    "Synonym": "{0} and {1} have similar meanings",
     "Antonym": "{0} is the opposite of {1}",
     "DistinctFrom": "it cannot be both {0} and {1}",
     "DerivedFrom": "the word {0} is derived from the word {1}",
@@ -133,6 +134,19 @@ RELATION_MAP = {
     "NotHasProperty": "{0} does not have the property of {1}",
     "NotMadeOf": "{0} is not made of {1}",
     "NotIsA": "{0} is not {1}",
+    # New entries added based on ConceptNet
+    "HasContext": "{0} is in the context of {1}",
+    "SimilarTo": "{0} is similar to {1}",
+    'dbpedia/capital': "{1} is the capital of {0}", # sic
+    'dbpedia/field': "{0} is in the field of {1}",
+    'dbpedia/genre': "the works of {0} are mainly {1}",
+    'dbpedia/genus': "{1} is the genus of {0}",
+    'dbpedia/influencedBy': "{0} was influenced by {1}",
+    'dbpedia/knownFor': "{0} is known for {1}",
+    'dbpedia/language': "{1} is the language of {0}",
+    'dbpedia/leader': "{1} is the leader of {0}",
+    'dbpedia/occupation': "{0}'s occupation is {1}",
+    'dbpedia/product': "{0} produces {1}",
 }
 
 
