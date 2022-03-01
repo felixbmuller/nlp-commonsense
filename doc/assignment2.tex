@@ -1,0 +1,224 @@
+
+
+\documentclass{article}
+
+\usepackage{fullpage}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{graphicx}
+\usepackage{parskip}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{listings} % For displaying code
+\usepackage{algorithm2e} % pseudo-code
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{soul}
+\usepackage{makecell} % for thead
+\usepackage{booktabs}
+
+% Colors
+\definecolor{blu}{rgb}{0,0,1}
+\def\blu#1{{\color{blu}#1}}
+\definecolor{gre}{rgb}{0,.5,0}
+\def\gre#1{{\color{gre}#1}}
+\definecolor{red}{rgb}{1,0,0}
+\def\red#1{{\color{red}#1}}
+\def\norm#1{\|#1\|}
+
+% Math
+\def\R{\mathbb{R}}
+\def\argmax{\mathop{\rm arg\,max}}
+\def\argmin{\mathop{\rm arg\,min}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\alignStar}[1]{\begin{align*}#1\end{align*}}
+\def\half{\frac 1 2}
+
+% LaTeX
+\newcommand{\fig}[2]{\includegraphics[width=#1\textwidth]{#2}}
+\newcommand{\centerfig}[2]{\begin{center}\includegraphics[width=#1\textwidth]{#2}\end{center}}
+\newcommand{\thisisstupid}{\S}
+\def\items#1{\begin{itemize}#1\end{itemize}}
+\def\enum#1{\begin{enumerate}#1\end{enumerate}}
+
+\setlist[enumerate]{topsep=0pt}
+\setlist[itemize]{topsep=0pt,noitemsep}
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%TEXT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{CPSC 532V -- NLP Commonsense -- Assignment 2}
+\author{Felix Mueller}
+\date{}
+\maketitle
+
+\section*{Notes about the Implementation}
+\label{sec:implementation}
+
+The implementation submitted mostly consists of code from assignment
+1.  I mainly added two functions, namely
+\verb|renderer.render_path_natural| to get a natural language
+representation of a path and
+\verb|qa_processing.get_knowledge_for_example| to perform the
+knowledge base lookup for one premise-choice-pair.  I am using the
+relation map from JoshFeldman95\footnote{link to
+  \href{https://github.com/JoshFeldman95/Extracting-CK-from-Large-LM/blob/master/templates/relation_map.json}{GitHub}},
+but I added a few missing templates, especially for DBpedia relations.
+I created two Jupyter notebooks based on the template, one for
+training and evaluating the baseline model and one for the knowledge
+base (KB) model.  I added the question (``cause'' or ``effect'') to
+the premise when looking up the knowledge base and mapped it to
+natural language questions when creating the model input.  For the KB
+model I tried sorting the preprocessed and tokenized inputs by length
+to have inputs of similar length in each batch, but it performed very
+bad ($53\%$ accuracy on the validation set), so I discarded this
+approach.
+
+
+
+\section*{Evaluation}
+\label{sec:step-1:-implement}
+
+In this section I will evaluate the baseline model (\textsc{BERT} base
+with finetuning) against my model (\textsc{BERT} base with finetuning
+and knowledge base information).  The evaluation is performed on the
+\textsc{COPA} validation dataset with 100 samples.
+
+After manually reviewing 25 randomly selected classification mistakes
+of both the baseline and the KB model, I isolated the following five
+categories of errors.
+
+\begin{description}
+\item[P] The prediction is a plausible cause/effect, but is less likely than the correct choice.
+\item[C] The predicted choice contradicts the premise.
+\item[U] The predicted choice is unrelated to the premise.
+  
+\item[E] The predicted choice is a plausible effect, but the question
+  demanded a plausible cause.
+\item[R] There is some apparent relation between the predicted choice and the premise, but it is neither cause nor effect.
+\end{description}
+
+
+
+Table \ref{tab:examples} contains an example for each error category.
+I did not find specific linguistic properties shared among multiple
+errors which is why I did not include a category for this type or
+error.  However, I think that all of \textbf{P}, \textbf{E} and
+\textbf{R} imply some linguistic understanding that was applied wrong.
+There were some mistakes where I think that the model would have
+needed further fine-grained commonsense knowledge about human behavior
+that is probably not present in \textsc{BERT}, because it is hardly
+explicitly explained in written texts.  An example of this would be
+
+\begin{quote}
+  The man perceived that the woman looked different. What was the cause of this?
+
+  The woman got her hair cut. OR The woman wore a bracelet.
+\end{quote}
+
+as both changes the looks of a person, but we regard a changed haircut
+to be more salient.  Another example is
+
+\begin{quote}
+  The computer was expensive to fix.  What happened as a result?
+
+  I got it repaired. OR I bought a new one.
+  
+\end{quote}
+
+which needs the additional information that buying a new computer is
+often more economically than repairing an old one. (When replacing
+``computer'' by ``car'', humans would probably answer the question
+differently).  However, these mistakes also happened with the KB
+model, which suggests that the KB model did not (always) succeed at
+providing the necessary additional knowledge.
+
+Table \ref{tab:results} contains the validation accuracy and the
+percentage distribution over the error categories for both models.  We
+can observe that the performance of the model declined significantly
+when adding the knowledge base. I suspect that the added information
+in the premise makes it harder for the model to focus on the relevant
+parts of the input. Also the added information follows a very stiff
+pattern that differs from natural language which might impact the
+inference capabilities of the model negatively.  This can be seen in
+the following example:
+
+\begin{quote}
+  [CLS] malpractice is like physician. malpractice is like
+  patient. effect is in the context of law. lawsuit is in the context
+  of law. the physician misdiagnosed the patient. what happened as a
+  result? [SEP] the patient filed a malpractice lawsuit against the
+  physician. [SEP]
+\end{quote}
+
+Looking at the error distributions, the KB model seems to make less
+mistakes where the choice contradicts the premise. The number of
+mistakes where effect and caused are confused on the other hand
+increased. This could indicate that the knowledge base information
+changed the reasoning of the model and made it more aware of the
+situation, despite the overall worse performance.  However, more date
+is needed to substantiate this hypothesis, as the differences are not
+significant.
+
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}[h]{lp{0.25\linewidth}lp{0.25\linewidth}p{0.25\linewidth}}
+    \toprule
+    & \thead{\textbf{Premise}} & \thead{\textbf{Question}} & \thead{\textbf{Predicted Choice}} & \thead{\textbf{Correct Choice}} \\
+    \midrule
+    P & The man perceived that the woman looked different. & cause  & The woman wore a bracelet. & The woman got her hair cut. \\
+    C & The bowling ball knocked over the bowling pins. & cause & The man dropped the bowling ball on his foot. & The man rolled the bowling ball down the alley. \\
+    U & I wanted to conserve energy. & effect & I swept the floor in the unoccupied room. & I shut off the light in the unoccupied room. \\
+    E & The man lost the competition. & cause & He intimidated his competitors. & The competition was sabotaged. \\
+    R & The player caught the ball. & cause & Her opponent tried to intercept it. & Her teammate threw it to her. \\
+        \bottomrule
+  \end{tabular}
+  \caption{Examples for each of the error categories}
+  \label{tab:examples}
+\end{table}
+
+
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}[h]{lcrrrrr}
+    \toprule
+    & \thead{Validation} &\multicolumn{5}{c}{\thead{Error Distribution [\%]}} \\
+    \thead{Model} & \thead{Accuracy [\%]} & \thead{P} & \thead{C} & \thead{U} & \thead{E} & \thead{R} \\ \midrule
+    \textsc{BERT} + FT & \textbf{70} & 20 & 28 & 32 & 8 & 12 \\
+    \makecell[l]{\textsc{BERT} + FT \\ + Knowledge base} & 61 & 24 & 16 & 32 & 16 & 12 \\
+    \midrule
+    p-value\footnotemark & - & .70 & .18 & - & .15 & - \\ 
+    \bottomrule
+  \end{tabular}
+  \caption{Evaluation results on the validation set ($n=100$). The
+    error distributions were determined among 25 randomly selected
+    classification mistakes on the validation set. }
+  \label{tab:results}
+\end{table}
+
+\pagebreak
+
+\footnotetext{probability of the two models having the same true
+  frequency of a specific error type as measured by the paired
+  Student's t-test.}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% Local variables:
+%%% End: 
+%  LocalWords:  
